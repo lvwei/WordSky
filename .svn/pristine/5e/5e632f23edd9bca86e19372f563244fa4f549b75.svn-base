@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html">
+	<h:head>
+
+	</h:head>
+
+	<h:body>
+	
+    <p:tab title="Marking tasks">  
+  	<h:form>    
+ 	<p:commandButton  value="Assign Marking tasks"
+				action="#{CoursePageBean.taskAssignment}" ajax="false" />  	
+	 </h:form>			
+
+
+<h:form>
+<p:scrollPanel >  
+<br></br>
+    <p:dataGrid var="section" value="#{userInfoBean.user.currentCourse.sections}" columns="1" 
+     rows="1" paginator="true"  
+        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  > 
+        <p:panel header="Section:   #{userInfoBean.user.currentCourse.sections.indexOf(section)}" >  
+            	<h:outputLabel  value="Section Location(room): "/> 
+                <h:outputText value="#{section.room}"/>
+                <br></br>
+                <h:outputLabel  value="Start time "/> 
+                <p:calendar value="#{section.startTime}" pattern="HH:mm" timeOnly="true"/>
+                <br></br>
+                <h:outputLabel  value="End time "/> 
+                <p:calendar value="#{section.endTime}" pattern="HH:mm" timeOnly="true"/>  
+                <br></br>
+           <ui:repeat var="group" value="#{section.groups}">
+           <h:outputLabel  value="Students under a group "/>
+           <br></br>
+           <ui:repeat var="student" value="#{group.students}">
+           <h:outputText value=" #{student.lastName}  #{student.firstName}" /> 
+           <br></br>
+           </ui:repeat>          
+           </ui:repeat>          
+         </p:panel>
+ 	
+ <p:dataGrid var="subsection" value="#{section.subSections}" columns="2" >  	
+         	<p:panel header="Subsection: " > 
+ 				<h:outputLabel  value="Subsection start time "/> 
+       		 	<p:calendar value="#{subsection.startTime}" pattern="HH:mm" timeOnly="true"/>
+                <h:outputLabel  value="Subsection end time "/> 
+                <p:calendar value="#{subsection.endTime}" pattern="HH:mm" timeOnly="true"/> 
+           
+
+       
+        <ui:repeat var="holddate" value="#{subsection.holdDate}">
+        <p:panel header="Holddate: " >
+        <h:outputLabel  value="Hold date: "/> 
+       	<p:calendar value="#{holddate.date}" />
+       	<h:outputLabel  value="Assigned ta: "/> 
+       	<h:outputText value="Ta #{holddate.ta.id}" />
+        <br></br>
+        <p:commandButton  value="Change assigned Ta"
+				action="#{CoursePageBean.changeAssignedTa}" actionListener="#{HolddateBean.changeAssignedTaListener}" ajax="false">
+				<f:attribute name="HD" value="#{holddate}" />
+		</p:commandButton>
+       	<h:outputLabel  value="Assigned student: "/> 
+       	<h:outputText value=" #{holddate.student.lastName}  #{holddate.student.firstName}" />          
+        <br></br>       
+        <h:outputLabel  value="Individual Mark: "/> 
+        <h:outputText  value="#{holddate.individualMark.mark} "/> 
+        <br></br>
+        <h:outputLabel value="Absent assigned student: #{holddate.absentStudent.lastName}  #{holddate.absentStudent.firstName} " style="margin-right:5px" rendered="#{holddate.studentAbsent}" />  
+              	<p:commandButton  value="Approve"
+				action="#{CoursePageBean.courseMainPage}" actionListener="#{userInfoBean.user.currentCourse.absentStudentListener}" ajax="false" rendered="#{holddate.studentAbsent!=holddate.approvedAbsent}" >
+				<f:attribute name="hd" value="#{holddate}" />
+				</p:commandButton> 
+		<br></br>
+        <h:outputLabel  value="Group Marks: "/> 
+        <br></br>
+        <ui:repeat var="groupmark" value="#{holddate.groupMark}" >
+        <h:outputText  value="#{groupmark.student.lastName}  #{groupmark.student.firstName} :  #{groupmark.mark} "/> 
+        <br></br>
+        </ui:repeat>
+        </p:panel> 
+        </ui:repeat> 
+     </p:panel>      
+    </p:dataGrid>  
+           
+
+ </p:dataGrid>
+</p:scrollPanel> 				
+					
+</h:form>				    
+    </p:tab>  
+		
+	</h:body>
+</f:view>
+</html>

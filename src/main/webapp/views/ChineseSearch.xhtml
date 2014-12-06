@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui"
+	template="template/MainTemplate.xhtml">
+	<ui:define name="content">
+		<h:form>
+			<p:growl id="messages" showDetail="true" />
+			<p:dataTable id="detailItemTable" var="item"
+				value="#{ChineseBean.searchedList}" rows="10" WidgetVar="detailItemTable"
+				paginator="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15">
+				<f:facet name="header">
+        			#{ChineseBean.title}
+   				</f:facet>
+				<p:column headerText="Origin" style="width:200px;"
+					filterBy="#{item.origin}" sortBy="#{item.origin}"
+					filterMatchMode="contains">
+					<h:outputText value="#{item.origin}" />
+				</p:column>
+
+				<p:column headerText="Type" style="width:200px;" filterBy="#{item.type}"
+					sortBy="#{item.type}" filterMatchMode="startsWith">
+					<h:outputText value="#{item.type}" />
+				</p:column>
+
+				<p:column headerText="Content" filterBy="#{item.content}"
+					sortBy="#{item.content}" filterMatchMode="startsWith">
+					<h:outputText value="#{item.content}" />
+				</p:column>
+
+
+
+				<f:facet name="footer">
+			        In total there are #{fn:length(ChineseBean.itemList)} phases.
+			        
+			        <p:commandButton value="Back"
+						action="#{ChineseBean.chineseActionCancel}" ajax="false" />
+				</f:facet>
+			</p:dataTable>
+
+
+
+
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,103 @@
+package com.eece496.webapp.jsfbean;
+
+import java.io.Serializable;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import org.primefaces.event.TransferEvent;
+import org.springframework.context.annotation.Scope;
+
+import com.eece496.webapp.developdao.CourseDevDAO;
+import com.eece496.webapp.developdao.UserDevDAO;
+import com.eece496.webapp.helperclass.ChangePassword;
+import com.eece496.webapp.pojo.Admin;
+import com.eece496.webapp.pojo.Course;
+import com.eece496.webapp.pojo.User;
+
+
+@Named("AdminPageBean")
+@Scope("request")
+public class AdminPageBean  {
+	@Inject
+	UserInfoBean userInfoBean;
+	@Inject
+	UserDevDAO userDevDAO;
+	@Inject
+	CourseDevDAO courseDevDAO;
+	private ChangePassword changePassword;
+	
+	public ChangePassword getChangePassword() {
+		return changePassword;
+	}
+
+	public void setChangePassword(ChangePassword changePassword) {
+		this.changePassword = changePassword;
+	}
+	
+	
+	public String returnMainPage(){
+		return "AdminMainPage";
+	}
+	
+	public String courseMainPage(){
+		((Admin) userInfoBean.getUser()).getCurrentCourse().setStudents(courseDevDAO.getStudent(0));
+		((Admin) userInfoBean.getUser()).getCurrentCourse().setSections(courseDevDAO.getSection(0)); 
+		((Admin) userInfoBean.getUser()).getCurrentCourse().setTas(courseDevDAO.getTa(0));
+		((Admin) userInfoBean.getUser()).getCurrentCourse().setSubSectionPerSec(4);
+		return "CourseMainPage.xhtml";
+	}
+
+    public String changeInfo(){
+    	System.out.println("ChangeInfo");
+    	return "ChangeInfo.xhtml";
+    }
+    
+    public String changePassword(){
+    	System.out.println("changePassword");
+    	return "ChangePassword.xhtml";
+    }
+    
+    public String changeInfoSuccess(){
+    	System.out.println("changeInfoSuccess");
+    	return "ChangeInfoFinish.xhtml";
+    }
+    
+    public String changePasswordSuccess(){
+    	if(this.changePassword.getOldPassword()!=this.userInfoBean.getUser().getPassword()){
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Failed to change password",
+							"Incorrect old Password !"));
+    		return null;
+    	}else if(this.changePassword.getNewPassword()!=this.changePassword.getNewPassword2()){
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Failed to change password",
+							"New password not matching!"));
+    		return null;
+    	}
+    	else{
+	    	System.out.println("changePasswordSuccess");
+	    	return "ChangePasswordSuccess.xhtml";
+    	}
+    }
+    
+	public void onTransfer(TransferEvent event) {
+	      StringBuilder builder = new StringBuilder();  
+	        for(Object item : event.getItems()) {  
+	            builder.append(((Course) item).getCourseName()).append("<br />");  
+	        }  
+	          
+	        FacesMessage msg = new FacesMessage();  
+	        msg.setSeverity(FacesMessage.SEVERITY_INFO);  
+	        msg.setSummary("Items Transferred");  
+	        msg.setDetail(builder.toString());  
+	          
+	        FacesContext.getCurrentInstance().addMessage(null, msg); 
+	}
+}

@@ -1,0 +1,54 @@
+package com.eece496.webapp.jdbcdao;
+
+import static org.junit.Assert.*;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.eece496.webapp.dao.HolddateDAO;
+import com.eece496.webapp.dao.SectionDAO;
+import com.eece496.webapp.pojo.HoldDate;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration({ "file:src/main/webapp/WEB-INF/spring/root-context.xml" })
+public class HolddateJdbcDAOTest {
+	
+	@Inject
+	private HolddateDAO holddateDao;
+
+	@Test
+	public void testAddHolddate() {
+		//fail("Not yet implemented");
+	}
+
+	@Test
+	public void testGetHolddate() {
+		HoldDate holdDate = this.holddateDao.getHolddate(1);
+		assertNotNull("", holdDate);
+		assertEquals("", 1, holdDate.getId());System.out.println(holdDate.getDate());
+		holdDate = null;
+		holdDate = this.holddateDao.getHolddate(2);
+		assertNotNull("", holdDate);
+		assertEquals("", 2, holdDate.getId());
+		holdDate = this.holddateDao.getHolddate(3);
+		assertNull("", holdDate);
+	}
+
+	@Test
+	public void testGetHolddateOfSubsection() {
+		List<HoldDate> holdDateList = this.holddateDao.getHolddateOfSubsection(1);
+		assertNotNull("", holdDateList);
+		assertEquals("", 0, holdDateList.size());
+		holdDateList = null;
+		holdDateList = this.holddateDao.getHolddateOfSubsection(2);
+		assertNotNull("", holdDateList);
+		assertEquals("", 2, holdDateList.size());
+	}
+
+}

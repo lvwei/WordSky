@@ -1,0 +1,16 @@
+package com.eece496.webapp.dao;
+
+import java.util.List;
+
+import com.eece496.webapp.pojo.Group;
+import com.eece496.webapp.pojo.Student;
+import com.eece496.webapp.pojo.User;
+
+public interface GroupDAO {
+
+
+	
+	public  List<Group>getGroup(int courseId);
+	public  List<Group>getGroupOfSection(int sectionId);
+	public  List<Group>getGroupOfSubsection(int subsectionId);
+}

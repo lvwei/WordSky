@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<h:outputStylesheet name="default.css" library="css" />
+</h:head>
+
+<h:body id="body">
+
+	<h:form styleClass="topMenu">
+
+		<p:commandButton id="dynaButton" value="词" type="button"
+			style="width:200px" />
+		<p:tieredMenu overlay="true" trigger="dynaButton" my="left top"
+			at="left bottom" style="width:200px">
+			<p:submenu label="动词">
+				<p:menuitem value="一字动词" action="#{ChineseBean.getChinese('item','一字动词')}"
+					ajax="false" />
+				<p:menuitem value="两字动词" action="#{ChineseBean.getChinese('item','二字动词')}"
+					ajax="false" />
+			</p:submenu>
+			<p:submenu label="名词">
+				<p:menuitem value="一字名词" action="#{ChineseBean.getChinese('item','一字名词')}"
+					ajax="false" />
+				<p:menuitem value="二字名词" action="#{ChineseBean.getChinese('item','二字名词')}"
+					ajax="false" />
+			</p:submenu>
+			<p:submenu label="形容词副词">
+				<p:menuitem value="一字形容词/副词" action="#{ChineseBean.getChinese('item','一字形容词/副词')}"
+					ajax="false" />
+				<p:menuitem value="两字形容词/副词" action="#{ChineseBean.getChinese('item','两字形容词/副词')}"
+					ajax="false" />
+			</p:submenu>
+			<p:submenu label="其它">
+				<p:menuitem value="三字词语" action="#{ChineseBean.getChinese('item','三字词语')}"
+					ajax="false" />
+				<p:menuitem value="四字词语" action="#{ChineseBean.getChinese('item','四字词语')}" ajax="false" />
+			</p:submenu>
+		</p:tieredMenu>
+
+		<p:commandButton id="dynaButton2" value="语句" type="button"
+			style="width:200px;" />
+		<p:tieredMenu overlay="true" trigger="dynaButton2" my="left top"
+			at="left bottom" style="width:200px">
+			<p:menuitem value="短语" action="#{ChineseBean.getChinese('sentence','短语')}"
+				ajax="false" />
+			<p:menuitem value="长句" action="#{ChineseBean.getChinese('sentence','长句')}"
+				ajax="false" />
+		</p:tieredMenu>
+
+		<p:commandButton id="dynaButton3" value="批量查阅" type="button"
+			style="width:200px;" />
+
+		<p:tieredMenu overlay="true" trigger="dynaButton3" my="left top"
+			at="left bottom" style="width:200px">
+			<p:menuitem value="所有词语" action="#{ChineseBean.toAllChinese('item')}" ajax="false" />
+			<p:menuitem value="所有语句" action="#{ChineseBean.toAllChinese('sentence')}" 
+				ajax="false" />
+		</p:tieredMenu>
+		
+		<p:commandButton id="dynaButton4" value="English" type="button"
+			style="width:200px;" />
+		<p:tieredMenu overlay="true" trigger="dynaButton4" my="left top"
+			at="left bottom" style="width:200px">
+			<p:menuitem value="Word" action="#{EnglishBean.getWord}" ajax="false" />
+			<p:menuitem value="Phrase" action="#{EnglishBean.getPhrase}"
+				ajax="false" />
+			<p:menuitem value="Sample" action="#{EnglishBean.getSample}"
+				ajax="false" />
+		</p:tieredMenu>
+
+
+
+	</h:form>
+
+	<p:separator></p:separator>
+
+	<ui:insert name="content">
+	无独原曲云添梦 尽血干青雨化茹
+	</ui:insert>
+
+</h:body>
+</html>

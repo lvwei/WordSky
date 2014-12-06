@@ -1,0 +1,26 @@
+package com.eece496.webapp.jdbcdao.mapper;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import javax.inject.Named;
+
+import org.springframework.jdbc.core.RowMapper;
+
+import com.eece496.webapp.pojo.Mark;
+
+@Named
+public class MarkMapper implements RowMapper<Mark> {
+
+	@Override
+	public Mark mapRow(ResultSet rs, int rowNum) throws SQLException {
+		Mark mark = new Mark();
+		mark.setId(rs.getInt(1));
+		mark.setMark(rs.getInt(2));
+		mark.setStudentId(rs.getInt(3));
+		mark.setHoldDateId(rs.getInt(4));
+		mark.setIndividualMark(rs.getBoolean(5));
+		return mark;
+	}
+
+}

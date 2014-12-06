@@ -1,0 +1,103 @@
+package com.eece496.webapp.jdbcdao;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import org.primefaces.model.DualListModel;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+
+import com.eece496.webapp.dao.UserDAO;
+import com.eece496.webapp.pojo.Course;
+import com.eece496.webapp.pojo.Student;
+import com.eece496.webapp.pojo.Ta;
+import com.eece496.webapp.pojo.User;
+
+//@Named
+public class UserJdbcDAO implements UserDAO {
+
+	@Inject
+	private JdbcTemplate jdbcTemplate;
+
+	@Override
+	public User getUser(String username, String password) {
+		final String SQL_QUERY = "select * from users where username LIKE ? and password LIKE ?";
+		return this.jdbcTemplate.queryForObject(SQL_QUERY, new Object[] {
+				username, password }, new UserMapper());
+	}
+
+	@Override
+	public List<Ta> getTa(int courseId) {
+		List<Ta> randTa = new ArrayList<Ta>();
+		for (int i = 0; i < 6; i++) {
+			randTa.add(new Ta());
+			randTa.get(i).setId(i);
+			randTa.get(i).setFirstName("F");
+		}
+
+		return randTa;
+	}
+
+	@Override
+	public List<Student> getStudent(int courseId) {
+		List<Student> randStudent = new ArrayList<Student>();
+		for (int i = 0; i < 22; i++) {
+			String last = "L" + Integer.toString(i);
+			String first = "F" + Integer.toString(i);
+			String s = "S" + Integer.toString(i);
+			randStudent.add(new Student(last, first, s));
+		}
+
+		return randStudent;
+	}
+
+	@Override
+	public List<Student> getGroupStudent(int groupId) {
+		List<Student> a = new ArrayList<Student>();
+
+		return a;
+	}
+
+	@Override
+	public Ta getTaOfHolddate(int holddateId) {
+		Ta a = new Ta();
+
+		return a;
+	}
+
+	@Override
+	public Student getStudentOfHolddate(int holddateId) {
+		Student a = new Student();
+
+		return a;
+	}
+
+	@Override
+	public Student getAbsentStudentOfHolddate(int holddateId) {
+		Student a = new Student();
+
+		return a;
+	}
+
+	private static final class UserMapper implements RowMapper<User> {
+
+		@Override
+		public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+			User user = new User();
+			user.setId(rs.getInt(1));
+			user.setUsername(rs.getString(2));
+			user.setPassword(rs.getString(3));
+			user.setFirstName(rs.getString(4));
+			user.setLastName(rs.getString(5));
+			user.setAuthorization(rs.getInt(6));
+			return user;
+		}
+
+	}
+
+}

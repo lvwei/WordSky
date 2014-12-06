@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html">
+	<h:head>
+
+	</h:head>
+
+	<h:body>
+		<h:form>
+
+			<p:dataTable id="markTable" var="markTableRow"
+				value="#{markTableBean.markTableRows}" widgetVar="marksTable"
+				emptyMessage="No marks found for you"
+				filteredValue="#{markTableBean.filteredMarkTableRows}">
+
+<!-- 				<f:facet name="header">
+					<p:outputPanel>
+						<h:outputText value="Search all fields:" />
+						<p:inputText id="globalFilter" onkeyup="markTableBean.filter()"
+							style="width:150px" />
+					</p:outputPanel>
+				</f:facet> -->
+
+				<p:column id="studentNumColumn"
+					filterBy="#{markTableRow.studentNumber}"
+					headerText="Student Number" footerText="start with"
+					filterMatchMode="startsWith">
+					<h:outputText value="#{markTableRow.studentNumber}" />
+				</p:column>
+
+				<p:column id="firstNameColumn" filterBy="#{markTableRow.firstName}"
+					headerText="First Name" footerText="contains"
+					filterMatchMode="contains">
+					<h:outputText value="#{markTableRow.firstName}" />
+				</p:column>
+
+				<p:column id="lastNameColumn" filterBy="#{markTableRow.lastName}"
+					headerText="last Name" footerText="contains"
+					filterMatchMode="contains">
+					<h:outputText value="#{markTableRow.lastName}" />
+				</p:column>
+
+				<p:column id="markColumn" filterBy="#{markTableRow.mark}"
+					headerText="Mark" footerText="start with"
+					filterMatchMode="startsWith">
+					<h:outputText value="#{markTableRow.mar}" />
+				</p:column>
+
+				<p:column id="courseColumn" filterBy="#{markTableRow.course}"
+					headerText="Course" footerText="contains"
+					filterMatchMode="contains">
+					<h:outputText value="#{markTableRow.course}" />
+				</p:column>
+
+				<p:column id="dateColumn" filterBy="#{markTableRow.date}"
+					headerText="Date" footerText="contains" filterMatchMode="contains">
+					<h:outputText value="#{markTableRow.date}" />
+				</p:column>
+
+				<p:column id="sectionTimeColumn" filterBy="#{markTableRow.sectionTime}"
+					headerText="Section Time" footerText="contains" filterMatchMode="contains">
+					<h:outputText value="#{markTableRow.sectionTime}" />
+				</p:column>
+
+				<p:column id="isIdividualMarkColumn" filterBy="#{markTableRow.isIndividualMark}"
+					headerText="Mark Type" footerText="contains" filterMatchMode="contains">
+					<h:outputText value="#{markTableRow.isIndividualMark}" />
+				</p:column>
+			</p:dataTable>
+
+		</h:form>
+
+	</h:body>
+</f:view>
+</html>

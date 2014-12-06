@@ -1,0 +1,11 @@
+package com.eece496.webapp.dao;
+
+import java.util.List;
+
+import com.eece496.webapp.pojo.Student;
+import com.eece496.webapp.pojo.User;
+
+public interface GroupDAO {
+
+	public  List<Student>getGroupStudent(int groupId);
+}

@@ -1,0 +1,89 @@
+package com.eece496.webapp.pojo;
+
+public class MarkTableRow {
+	private int markId;
+	private String studentNumber;
+	private String firstName;
+	private String lastName;
+	private int mark;
+	private String course;
+	private String date;
+	private String sectionTime;
+	private boolean isIndividualMark;
+	private boolean isModified;
+
+	public MarkTableRow(int markId, String studentNumber, String firstName,
+			String lastName, int mark, String course, String date,
+			String sectionTime, boolean isIndividualMark) {
+		super();
+		this.markId = markId;
+		this.studentNumber = studentNumber;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.mark = mark;
+		this.course = course;
+		this.date = date;
+		this.sectionTime = sectionTime;
+		this.isIndividualMark = isIndividualMark;
+		this.isModified = false;
+	}
+
+	public int getMarkId() {
+		return markId;
+	}
+
+	public String getStudentNumber() {
+		return studentNumber;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public int getMark() {
+		return mark;
+	}
+
+	public String getCourse() {
+		return course;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public String getSectionTime() {
+		return sectionTime;
+	}
+
+	public boolean getIsIndividualMark() {
+		return isIndividualMark;
+	}
+
+	public boolean isModified() {
+		return isModified;
+	}
+
+	public void setMark(int mark) {
+		this.isModified = true;
+		//if (this.mark != mark) {
+			System.out.println(this.toString());
+			System.out.println("previous: "+ this.mark + "     new: "+ mark);
+			this.mark = mark;
+		//}
+	}
+
+	@Override
+	public String toString() {
+		return "MarkTableRow [studentNumber=" + studentNumber + ", firstName="
+				+ firstName + ", lastName=" + lastName + ", mark=" + mark
+				+ ", course=" + course + ", date=" + date + ", sectionTime="
+				+ sectionTime + ", isIndividualMark=" + isIndividualMark
+				+ ", isModified=" + isModified + "]";
+	}
+
+}

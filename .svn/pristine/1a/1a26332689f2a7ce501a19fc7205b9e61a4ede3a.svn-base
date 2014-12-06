@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html">
+	<h:head>
+
+	</h:head>
+
+	<h:body>
+	
+<div>
+<h:outputLabel value="Ta: #{userInfoBean.user.id} #{userInfoBean.user.lastName} #{userInfoBean.user.firstName}" style="font-weight:bold" />
+</div>
+	
+<div>
+<h:outputLabel value="course: #{userInfoBean.user.course.courseName}" style="font-weight:bold" />
+</div>
+<h:form>
+<h:commandButton  value="Back"
+				action="#{TaPageBean.returnMainPage}" />
+</h:form>
+<h:form>
+		<h:outputText value="Start time"/>
+		<p:calendar value="#{TaPageBean.currentEhd.startTime}" pattern="HH:mm" timeOnly="true" />
+		<br></br>
+		<h:outputText value="End time"/>
+		<p:calendar value="#{TaPageBean.currentEhd.endTime}" pattern="HH:mm" timeOnly="true" />
+		<br></br>
+		<h:outputText value="Location"/>
+		<h:outputText value="#{TaPageBean.currentEhd.room}" />
+		<br></br>
+		<h:outputText value="Assigned student:"/>
+		<h:outputText value="#{TaPageBean.currentEhd.holddate.student.lastName}    #{TaPageBean.currentEhd.holddate.student.firstName}" />
+<br></br>
+				<h:outputText value="Mark:"/>
+				<h:outputText value="#{TaPageBean.currentEhd.holddate.individualMark.mark} " />
+	<br></br>			
+				<h:outputText value="Asked question:"/>
+				<h:inputText value="#{TaPageBean.currentEhd.holddate.question}" />
+        <p:spinner min="1" value="#{TaPageBean.currentEhd.individualMark}"/>
+				<h:commandButton  value="Assign mark"
+				action="#{TaPageBean.assignIndividualMark}" />
+				<p:commandButton  value="Report absent"
+				action="#{TaPageBean.ChangeAssignStudent}" 
+				actionListener="#{TaPageBean.absentStudentListener}" ajax="false" >
+				<f:attribute name="hd" value="#{holddate}" />
+				</p:commandButton> 
+</h:form>	
+<h:form>
+<h:outputText value="Group mark to assigned to every student:"/>	
+<p:spinner min="1" value="#{TaPageBean.currentEhd.groupMark}"/>
+<h:commandButton  value="Assign group mark and view"
+				action="#{TaPageBean.assignGroupMark}" />
+</h:form>
+
+<h:form>
+<h:commandButton  value="View group marks without setting"
+				action="#{TaPageBean.groupMarkPage}" />
+</h:form>
+	</h:body>
+</f:view>
+</html>

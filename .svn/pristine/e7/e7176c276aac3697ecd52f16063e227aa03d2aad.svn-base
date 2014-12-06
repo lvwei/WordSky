@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html">
+	<h:head>
+
+	</h:head>
+
+	<h:body>
+		<h:form>	
+		<p:panel header="Subsections in the selected day: " >
+		<ui:repeat var="xhd" value="#{TaPageBean.exhd}">
+		<p:panel>
+		<h:outputText value="Start time"/>
+		<p:calendar value="#{xhd.startTime}" />
+		<h:outputText value="End time"/>
+		<p:calendar value="#{xhd.endTime}" />
+		<h:outputText value="Location:"/>
+		<h:outputText value="#{xhd.room}" />
+		<p:commandButton  value="Mark this"
+				action="#{TaPageBean.markPage}" actionListener="#{TaPageBean.markListener}" ajax="false" rendered="#{ta.username!='default'}">
+				<f:attribute name="xhd" value="#{xhd}" />
+		</p:commandButton>
+		</p:panel>		
+		</ui:repeat>		
+		</p:panel>
+</h:form>		
+	</h:body>
+</f:view>
+</html>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui"
+	template="template/MainTemplate.xhtml">
+	<ui:define name="content">
+		<h:form>
+			<p:growl id="messages" showDetail="true" />
+			<p:dataTable id="detailItemTable" var="item"
+				value="#{EnglishBean.itemList}" rows="10"
+				WidgetVar="detailItemTable"
+				filteredValue="#{EnglishBean.filteredItemList}" paginator="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15">
+				<f:facet name="header">
+        			List of #{EnglishBean.currentType}
+   				</f:facet>
+
+				<p:column headerText="Content" filterBy="#{item.content}"
+					filterMatchMode="startsWith">
+					<h:outputText value="#{item.content}" />
+				</p:column>
+
+				<p:column headerText="Option" style="width:100px;">
+					<p:commandButton value="view" action="#{EnglishBean.toDetail}"
+						actionListener="#{EnglishBean.toDetailListener}" ajax="false"
+						icon="ui-icon-pencil">
+						<f:attribute name="item" value="#{item}" />
+					</p:commandButton>
+
+				</p:column>
+
+
+				<f:facet name="footer">
+			        In total there are #{fn:length(DetailBean.itemList)} phases.
+				</f:facet>
+				<p:commandButton value="Add" action="#{EnglishBean.addItem}"
+					ajax="false" />
+			</p:dataTable>
+
+
+
+
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:head>
+
+	</h:head>
+	
+	<h:body>
+	
+		<h:form >   
+	 	<p:messages id="mfcp" showDetail="true" autoUpdate="true" />
+	 	<h:outputLabel value="Old Password:" />
+		<p:password id="oldPassword" value="#{AdminPageBean.changePassword.oldPassword}"
+		label="Old Password" required="true" />
+		
+		<h:outputLabel value="New Password:" />
+		<p:password id="newPassword" value="#{AdminPageBean.changePassword.newPassword}"
+		label="New Password" required="true" />
+		
+		<h:outputLabel value="New Password confirm:" />
+		<p:password id="newPassword2" value="#{AdminPageBean.changePassword.newPassword2}"
+		label="New Password" required="true" />
+		
+		<p:commandButton id="submitButton" value="Change password"
+		onclick="AdminPageBean.changePasswordSuccess()" />
+		</h:form>
+		
+	</h:body>
+</html>

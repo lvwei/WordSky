@@ -1,0 +1,7 @@
+package com.eece496.webapp.service;
+
+import java.security.NoSuchAlgorithmException;
+
+public interface Sha1HashService {
+	String sha1(String input) throws NoSuchAlgorithmException;
+}

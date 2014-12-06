@@ -1,0 +1,336 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html">
+	<h:head>
+
+	</h:head>
+
+	<h:body>
+	
+<div>
+<h:outputLabel value="Current viewing course: #{userInfoBean.user.currentCourse.courseName}" style="font-weight:bold" />
+</div>
+<h:form>
+<h:commandButton value="Back" action="#{CoursePageBean.returnMainPage}"
+/>
+</h:form>
+
+<p:accordionPanel >
+
+
+    
+   
+    <p:tab title="Students">
+    <h:form>
+    <h:outputLabel  value="Course: #{userInfoBean.user.currentCourse.courseName}" style="font-weight:bold" />
+  	<br>
+  	</br>
+  	<h:outputLabel  value="Total students registed: #{userInfoBean.user.currentCourse.students.size()}" style="font-weight:bold" />
+    <br>
+  	</br>  		
+  	<h:outputLabel  value="Number of students to add"/>	
+  	<p:spinner min="1" value="#{userInfoBean.user.currentCourse.studentToAdd}">
+
+	</p:spinner>
+      			<p:commandButton  value="Add empty student"
+				action="#{CoursePageBean.addStudent}" ajax="false" />  
+	</h:form>			
+
+				<br></br>
+				<a href="AdminMainPage.xhtml">Reload this page(not save changes)</a> 
+    <p:scrollPanel >  
+    			<br></br>
+    <p:dataGrid var="student" value="#{userInfoBean.user.currentCourse.students}"  columns="2" 
+     rows="8" paginator="true"  
+        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"   >  
+                       
+        <p:panel header="#{student.lastName}  #{student.firstName}" >  
+        <h:form> 
+            <h:panelGrid  >                  
+            	<h:outputLabel  value="Lastname: "/>	
+            	<h:inputText value="#{student.lastName}" />  
+            	<h:outputLabel  value="Firstname: "/>
+                <h:inputText value="#{student.firstName}" /> 
+                <h:outputLabel  value="Studentnumber: "/> 
+                <h:inputText value="#{student.studentNumber}" />
+                <h:outputLabel  value="Username: "/> 
+                <h:inputText value="#{student.username}" />
+               
+                <h:outputLabel  value="Password: "/> 
+                <h:inputText value="#{student.password}" />
+                 <p:commandButton  value="Add"
+				action="#{CoursePageBean.addStudent2}" actionListener="#{CoursePageBean.addStudentListener}" ajax="false" rendered="#{student.username=='default'}">
+				<f:attribute name="student" value="#{student}" />
+				</p:commandButton>
+				<p:commandButton  value="Save"
+				action="#{CoursePageBean.saveStudent}" actionListener="#{CoursePageBean.saveStudentListener}" ajax="false" rendered="#{student.username!='default'}">
+				<f:attribute name="student" value="#{student}" />
+				</p:commandButton>			
+            </h:panelGrid>    
+            </h:form>          
+        </p:panel>        
+    </p:dataGrid>  
+</p:scrollPanel> 
+
+    </p:tab>     
+     
+    <p:tab title="Teaching assistents">
+    
+    <h:form>
+    <h:outputLabel  value="Course: #{userInfoBean.user.currentCourse.courseName}" style="font-weight:bold" />
+  	<br>
+  	</br>
+  	<h:outputLabel  value="Total teaching assistants: #{userInfoBean.user.currentCourse.tas.size()}" style="font-weight:bold" />
+    <br>
+  	</br>  		
+  	<h:outputLabel  value="Number of Ta to add"/>	
+  	<p:spinner min="1" value="#{userInfoBean.user.currentCourse.taToAdd}">
+
+	</p:spinner>
+      			<p:commandButton  value="Add Tas"
+				action="#{CoursePageBean.addTa}" ajax="false" />  
+				
+    </h:form>
+				<br></br>
+				<a href="AdminMainPage.xhtml">Reload this page(not save changes)</a> 
+    <p:scrollPanel >  
+    			<br></br>
+  
+    <p:dataGrid var="ta" value="#{userInfoBean.user.currentCourse.tas}" >
+    <p:panel header="TA: #{ta.id}  #{ta.lastName}  #{ta.firstName}">
+    <h:form>
+            <h:panelGrid  >  
+            	<h:outputLabel  value="Lastname: "/>	
+            	<h:inputText value="#{ta.lastName}" />  
+            	<h:outputLabel  value="Firstname: "/>
+                <h:inputText value="#{ta.firstName}" /> 
+                <h:outputLabel  value="username: "/> 
+                <h:inputText value="#{ta.username}" />
+                <h:outputLabel  value="password: "/> 
+                <h:inputText value="#{ta.password}" />
+                <h:outputLabel  value="student: "/> 
+                <h:inputText value="#{ta.studentNumber}" />
+                <p:commandButton  value="Add"
+				action="#{CoursePageBean.addTa2}" actionListener="#{CoursePageBean.addTaListener}" ajax="false" rendered="#{ta.username=='default'}">
+				<f:attribute name="ta" value="#{ta}" />
+				</p:commandButton>
+				<p:commandButton  value="Save"
+				action="#{CoursePageBean.saveTa}" actionListener="#{CoursePageBean.saveTaListener}"  ajax="false" rendered="#{ta.username!='default'}">
+				<f:attribute name="ta" value="#{ta}" />
+				</p:commandButton>
+            </h:panelGrid>  
+     </h:form>
+    </p:panel> 
+    </p:dataGrid>  
+</p:scrollPanel> 
+
+    </p:tab>
+    
+    
+    <p:tab title="Groups">
+    
+    <h:form>
+  	<h:outputLabel  value="Total groups: #{userInfoBean.user.currentCourse.groups.size()}" style="font-weight:bold" />
+    <br>
+  	</br>  		
+      			<p:commandButton  value="Assign groups"
+				action="#{CoursePageBean.groupAssignment}" ajax="false" />  
+				
+				<br></br>
+				<a href="AdminMainPage.xhtml">Reload this page(not save changes)</a> 
+	</h:form>			
+	<h:form>			
+    <p:scrollPanel >  
+    			<br></br>
+    <p:dataGrid var="group" value="#{userInfoBean.user.currentCourse.groups}" columns="1" 
+     rows="1" paginator="true"  
+        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  >  
+    <h:outputLabel  value="Group: #{userInfoBean.user.currentCourse.groups.indexOf(group)}" style="font-weight:bold" />
+      <p:dataGrid var="student" value="#{group.students}"   >  
+    
+        <p:panel header="#{student.lastName}  #{student.firstName}" >  
+            <h:panelGrid  >  
+            	<h:outputLabel  value="Lastname: "/>	
+            	<h:outputText value="#{student.lastName}" />  
+            	<h:outputLabel  value="Firstname: "/>
+                <h:outputText value="#{student.firstName}" /> 
+                <h:outputLabel  value="Studentnumber: "/> 
+                <h:outputText value="#{student.studentNumber}" />
+            </h:panelGrid>  
+        </p:panel>  
+        </p:dataGrid> 
+    </p:dataGrid>  
+</p:scrollPanel> 
+
+	</h:form>
+    </p:tab>
+ 
+ 
+ 
+ 	<p:tab title="Sections">
+  	<h:form>
+  	<h:outputLabel  value="Number of subsections per section: " style="font-weight:bold" />
+    <p:spinner min="1" max="10" value="#{userInfoBean.user.currentCourse.subSectionPerSec}">
+	</p:spinner>
+    <br></br>        
+    <h:outputLabel  value="Total sections: #{userInfoBean.user.currentCourse.sections.size()}" style="font-weight:bold" />
+    <br>
+  	</br>  		
+  	<h:outputLabel  value="Number of Sections to add"/>	
+  	<p:spinner min="1" value="#{userInfoBean.user.currentCourse.sectionToAdd}">
+
+	</p:spinner>
+      			<p:commandButton  value="Add Section"
+				action="#{CoursePageBean.addSection}" ajax="false" /> 
+	<br></br>	
+	</h:form>		
+    <h:form>
+				    <br></br>
+      			<p:commandButton  value="Set all"
+				action="#{CoursePageBean.setting}" ajax="false" />
+    <br></br>
+    </h:form>  
+				
+				<br></br>
+				<a href="CourseMainPage.xhtml">Reload this page(not save changes)</a> 
+        <p:scrollPanel >  
+    			<br></br>
+
+    <p:dataGrid var="section" value="#{userInfoBean.user.currentCourse.sections}" columns="3" >  
+        <p:panel header="Section:   #{userInfoBean.user.currentCourse.sections.indexOf(section)}" >  
+           <h:form>
+            <h:panelGrid  >             
+            	<h:outputLabel  value="Start time: "/>	
+            	<p:calendar value="#{section.startTime}" pattern="HH:mm" timeOnly="true"/>
+				<br></br>
+				<br></br>
+            	<h:outputLabel  value="End time: "/>
+                <p:calendar value="#{section.endTime}" pattern="HH:mm" timeOnly="true"/>
+				<br></br> 
+				<h:outputLabel  value="Section Location(room): "/> 
+                <h:inputText value="#{section.room}" />
+                <h:outputLabel  value="Assigned group: "/> 
+                <ui:repeat value="#{section.groups}" var="group">
+                <h:outputText value="group #{group.id} " /> 
+                </ui:repeat>
+                
+                
+        
+                <p:commandButton  value="View this section"
+				action="#{CoursePageBean.sectionMainPage}" actionListener="#{userInfoBean.user.currentCourse.sectionListener}" ajax="false">
+				<f:attribute name="section" value="#{section}" />
+				</p:commandButton>
+				<p:commandButton  value="Add"
+				action="#{CoursePageBean.addSection}" actionListener="#{CoursePageBean.addSectionListener}"  ajax="false" rendered="#{section.room=='default'}">
+				<f:attribute name="section" value="#{section}" />
+				</p:commandButton>
+				<p:commandButton  value="Save"
+				action="#{CoursePageBean.addSection2}" actionListener="#{CoursePageBean.saveSectionListener}"  ajax="false" rendered="#{section.room!='default'}">
+				<f:attribute name="section" value="#{section}" />
+				</p:commandButton>
+
+				
+            </h:panelGrid> 
+            </h:form> 
+        </p:panel>  
+    </p:dataGrid>  
+</p:scrollPanel> 
+    </p:tab>
+    
+    
+    <p:tab title="Marking tasks">  
+  	<h:form>    
+ 	<p:commandButton  value="Assign Marking tasks"
+				action="#{CoursePageBean.taskAssignment}" ajax="false" />  	
+	 </h:form>			
+
+
+<h:form>
+<p:scrollPanel >  
+<br></br>
+    <p:dataGrid var="section" value="#{userInfoBean.user.currentCourse.sections}" columns="1" 
+     rows="1" paginator="true"  
+        paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"  > 
+        <p:panel header="Section:   #{userInfoBean.user.currentCourse.sections.indexOf(section)}" >  
+            	<h:outputLabel  value="Section Location(room): "/> 
+                <h:outputText value="#{section.room}"/>
+                <br></br>
+                <h:outputLabel  value="Start time "/> 
+                <p:calendar value="#{section.startTime}" pattern="HH:mm" timeOnly="true"/>
+                <br></br>
+                <h:outputLabel  value="End time "/> 
+                <p:calendar value="#{section.endTime}" pattern="HH:mm" timeOnly="true"/>  
+                <br></br>
+           <ui:repeat var="group" value="#{section.groups}">
+           <h:outputLabel  value="Students under a group "/>
+           <br></br>
+           <ui:repeat var="student" value="#{group.students}">
+           <h:outputText value=" #{student.lastName}  #{student.firstName}" /> 
+           <br></br>
+           </ui:repeat>          
+           </ui:repeat>          
+         </p:panel>
+ 	
+ <p:dataGrid var="subsection" value="#{section.subSections}" columns="2" >  	
+         	<p:panel header="Subsection: " > 
+ 				<h:outputLabel  value="Subsection start time "/> 
+       		 	<p:calendar value="#{subsection.startTime}" pattern="HH:mm" timeOnly="true"/>
+                <h:outputLabel  value="Subsection end time "/> 
+                <p:calendar value="#{subsection.endTime}" pattern="HH:mm" timeOnly="true"/> 
+           
+
+       
+        <ui:repeat var="holddate" value="#{subsection.holdDate}">
+        <p:panel header="Holddate: " >
+        <h:outputLabel  value="Hold date: "/> 
+       	<p:calendar value="#{holddate.date}" />
+       	<h:outputLabel  value="Assigned ta: "/> 
+       	<h:outputText value="Ta #{holddate.ta.id}" />
+        <br></br>
+        <p:commandButton  value="Change assigned Ta"
+				action="#{CoursePageBean.changeAssignedTa}" actionListener="#{HolddateBean.changeAssignedTaListener}" ajax="false">
+				<f:attribute name="HD" value="#{holddate}" />
+		</p:commandButton>
+       	<h:outputLabel  value="Assigned student: "/> 
+       	<h:outputText value=" #{holddate.student.lastName}  #{holddate.student.firstName}" />          
+        <br></br>       
+        <h:outputLabel  value="Individual Mark: "/> 
+        <h:outputText  value="#{holddate.individualMark.mark} "/> 
+        <br></br>
+        <h:outputLabel value="Absent assigned student: #{holddate.absentStudent.lastName}  #{holddate.absentStudent.firstName} " style="margin-right:5px" rendered="#{holddate.studentAbsent}" />  
+              	<p:commandButton  value="Approve"
+				action="#{CoursePageBean.courseMainPage}" actionListener="#{CoursePageBean.absentStudentListener}" ajax="false" rendered="#{holddate.studentAbsent!=holddate.approvedAbsent}" >
+				<f:attribute name="hd" value="#{holddate}" />
+				</p:commandButton> 
+		<br></br>
+        <h:outputLabel  value="Group Marks: "/> 
+        <br></br>
+        <ui:repeat var="groupmark" value="#{holddate.groupMark}" >
+        <h:outputText  value="#{groupmark.student.lastName}  #{groupmark.student.firstName} :  #{groupmark.mark} "/> 
+        <br></br>
+        </ui:repeat>
+        </p:panel> 
+        </ui:repeat> 
+     </p:panel>      
+    </p:dataGrid>  
+           
+
+ </p:dataGrid>
+</p:scrollPanel> 				
+					
+</h:form>				    
+    </p:tab>  
+
+ 
+</p:accordionPanel>
+
+	</h:body>
+</f:view>
+</html>

@@ -1,0 +1,74 @@
+package com.eece496.webapp.pojo;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.inject.Named;
+
+import com.eece496.webapp.helperclass.DateUtils;
+
+public class HoldDate{
+private Date date;
+private Ta ta;
+private float individualMark;
+private List<Integer> groupMarks;
+private Student student;
+private int totalStudents;
+
+public int getTotalStudents() {
+	return totalStudents;
+}
+public void setTotalStudents(int totalStudents) {
+	this.totalStudents = totalStudents;
+	this.groupMarks=new ArrayList<Integer>();
+	for (int i=0;i<this.totalStudents;i++)
+	this.groupMarks.add(0);
+}
+public HoldDate(){
+
+}
+public Ta getTa() {
+	return ta;
+}
+
+public void setTa(Ta ta) {
+	this.ta = ta;
+}
+
+
+
+public Student getStudent() {
+	return student;
+}
+
+public void setStudent(Student student) {
+	this.student = student;
+}
+
+public Date getDate() {
+	return date;
+}
+
+public void setDate(Date date) {
+	this.date = date;
+}
+
+public float getIndividualMark() {
+	return individualMark;
+}
+
+public void setIndividualMark(float individualMark) {
+	this.individualMark = individualMark;
+}
+
+public List<Integer> getGroupMarks() {
+	return groupMarks;
+}
+
+public void setGroupMarks(List<Integer> groupMarks) {
+	this.groupMarks = groupMarks;
+}
+
+
+}

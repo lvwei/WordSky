@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html">
+	<h:head>
+
+	</h:head>
+
+	<h:body>
+<h:form>
+<h:commandButton  value="Back"
+				action="#{TaPageBean.returnMarkPage}" />
+</h:form>	
+	<ui:repeat var="mark" value="#{TaPageBean.currentEhd.holddate.groupMark}">
+	<h:form>
+	<h:outputText value="#{mark.student.lastName}  #{mark.student.firstName}: #{mark.mark}" />
+	<p:commandButton  value="Absentance"
+				action="#{TaPageBean.groupMarkPage}" actionListener="#{TaPageBean.groupmarkZeroListener}" ajax="false" rendered="#{ta.username!='default'}">
+				<f:attribute name="mark" value="#{mark}" />
+	</p:commandButton>
+	</h:form>
+	</ui:repeat>
+		
+	</h:body>
+</f:view>
+</html>

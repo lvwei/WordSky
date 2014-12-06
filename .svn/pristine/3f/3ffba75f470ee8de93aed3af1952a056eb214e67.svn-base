@@ -1,0 +1,32 @@
+package com.eece496.webapp.pojo;
+
+import java.util.List;
+
+import javax.inject.Named;
+
+public class Ta extends User{
+	
+	protected Course course;
+	
+	public Ta(Course c){
+		this.course=c;
+	}
+	
+	public Course getCourse() {
+		return course;
+	}
+
+	public void setCourse(Course course) {
+		this.course = course;
+	}
+
+	public Ta(){
+		
+	}
+	
+	public Ta(String userName,String passWord){
+		this.username=userName;
+		this.password=passWord;
+	}
+
+}

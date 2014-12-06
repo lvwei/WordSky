@@ -1,0 +1,55 @@
+package com.eece496.webapp.jdbcdao;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import com.eece496.webapp.dao.HolddateDAO;
+import com.eece496.webapp.jdbcdao.mapper.HoldDateMapper;
+import com.eece496.webapp.pojo.HoldDate;
+
+//@Named
+public class HolddateJdbcDAO implements HolddateDAO {
+	
+	@Inject
+	private JdbcTemplate jdbcTemplate;
+	
+	@Inject
+	private HoldDateMapper holdDateMapper;
+
+	@Override
+	public boolean addHolddate(HoldDate holddate, int subsectionId) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public HoldDate getHolddate(int holddateId) {
+		HoldDate holdDate = null;
+		final String SQL_QUERY = "select * from hold_dates where id = ?";
+		try {
+			holdDate = this.jdbcTemplate.queryForObject(SQL_QUERY,
+					new Object[] { holddateId }, this.holdDateMapper);
+		} catch (Exception ex) {
+		}
+		return holdDate;
+	}
+
+	@Override
+	public List<HoldDate> getHolddateOfSubsection(int subSectionId) {
+		List<HoldDate> holdDateList = new ArrayList<HoldDate>();
+		final String SQL_QUERY = "select * from hold_dates where subsection_id = ?";
+		try{	
+			holdDateList = this.jdbcTemplate.query(SQL_QUERY,
+					new Object[] { subSectionId }, this.holdDateMapper);
+		} catch (Exception ex) {
+			System.out.println(">>>>>>>>>>>>>>>>> ex");
+		}
+		return holdDateList;
+	}
+
+}

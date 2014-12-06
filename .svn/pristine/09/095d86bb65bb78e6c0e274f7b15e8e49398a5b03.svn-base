@@ -1,0 +1,19 @@
+package com.eece496.webapp.dao;
+
+import java.util.Date;
+import java.util.List;
+
+import com.eece496.webapp.pojo.Group;
+import com.eece496.webapp.pojo.HoldDate;
+import com.eece496.webapp.pojo.Student;
+import com.eece496.webapp.pojo.Subsection;
+import com.eece496.webapp.pojo.User;
+
+public interface SectionDAO {
+	public  List<Group>getGroupOfSection(int sectionId);
+	public Date getStartTimeOfSection(int sectionId);
+	public Date getEndTimeOfSection(int sectionId);
+	public  List<HoldDate>getHolddateOfSection(int sectionId);
+	public  List<Subsection>getSubsection(int sectionId);
+
+}

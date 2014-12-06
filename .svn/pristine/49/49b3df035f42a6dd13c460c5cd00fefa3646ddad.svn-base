@@ -1,0 +1,160 @@
+package com.eece496.webapp.jsfbean;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
+import org.springframework.context.annotation.Scope;
+
+import com.eece496.webapp.pojo.Admin;
+import com.eece496.webapp.pojo.User;
+
+
+@Named("CoursePageBean")
+@Scope("request")
+public class CoursePageBean  {
+	@Inject
+	UserInfoBean userInfoBean;
+	
+	private static final String languageString = 
+		    "Java,C,C++,PHP,C#,Python,Visual Basic,Objective-C,Perl,Ruby,JavaScript,Delphi," +
+		    "Lisp,SQL,Pascal,Ada,NXT-G,SAS,RPG,Lua,ABAP,Object Pascal,Go,Scheme,Fortran," +
+		    "Tc,D,COBOL,Logo,CL,APL,JavaFX Script,R,JScript.NET,C shell,ActionScript,Scratch," +
+		    "IDL,Haskell,Alice,Prolog,Erlang,Smalltalk,Forth,Awk,ML,Scala,ABC,Algol,Applescript," +
+		    "Bash,bc,Beta,CFML,cg,Clean,Clipper,Cobra,cT,Curl,Dylan,Eiffel,Euphoria,F#,Factor," +
+		    "Groovy,Icon,Io,J,LabVIEW,LabWindows/CVI,MAD,MAX/MSP,Modula-2,Modula-3,MUMPS,Natural," +
+		    "Oberon,Objective Caml,Occam,Oz,PL/I,Postscript,PowerShell,Q,REALbasic,S,SIGNAL,SPSS," +
+		    "Squirrel,Verilog,VHDL,XBase,XSLT,Z shell";
+private static final String[] languageArray = languageString.split(",");
+
+
+public List<String> suggestedStudent(String languagePrefix) {
+	List<String> matches = new ArrayList<String>();
+	for(String possibleStudent: languageArray) {
+	if(possibleStudent.toUpperCase()
+	.startsWith(languagePrefix.toUpperCase())) {
+	matches.add(possibleStudent);
+	}
+	}
+	return(matches);
+	}
+
+public String addStudent(){
+	   ((Admin) this.userInfoBean.getUser()).getCurrentCourse().addStudents( );
+	   return "CourseMainPage.xhtml";
+}
+
+public String addTa(){
+	   ((Admin) this.userInfoBean.getUser()).getCurrentCourse().addTas( );
+	   return "CourseMainPage.xhtml";
+}
+
+public String addSection(){
+	   ((Admin) this.userInfoBean.getUser()).getCurrentCourse().addSections( );
+	   return "CourseMainPage.xhtml";
+}
+
+public String courseMainPage(){
+	 
+	   return "CourseMainPage.xhtml";
+}
+
+public String taTest(){
+	 
+	   return "TaTest.xhtml";
+}
+
+public String saveSubsectionPerSec(){
+	   //this.saveSubsectionPerSec is updated; need database update
+	   return "CourseMainPage.xhtml";
+}
+
+public String saveStudents(){
+	 //	//this.students has been modified need to store in database
+	   return "CourseMainPage.xhtml";
+}
+
+public String saveSections(){
+	 //	//this.sections has been modified need to store in database
+	   return "CourseMainPage.xhtml";
+}
+
+public String saveTas(){
+	 //	//this.tas has been modified need to store in database
+	   return "CourseMainPage.xhtml";
+}
+
+public String saveDate(){
+	   // start and end Date has been changed; need to store to database
+	   return "CourseMainPage.xhtml";
+}
+
+public String changeAssignedTa(){
+	return "ChangeAssignTa.xhtml";
+}
+
+public String changeAssignedTaFinish(){
+	return "CourseMainPage.xhtml";
+}
+
+
+public String returnMainPage(){
+	return "AdminMainPage";
+}
+
+public String groupAssignment(){
+	
+	((Admin) userInfoBean.getUser()).getCurrentCourse().assignGroup();
+	//this.currentCourse.groups is updated; need database update
+	return "CourseMainPage";
+}
+
+
+public String sectionMainPage(){
+
+	return "SectionMainPage";
+}
+
+public static void selectListener(SelectEvent event) {
+	String itemSelected = event.getObject().toString();
+	String message =
+	String.format("Added '%s' to selections", itemSelected);
+	FacesContext context = FacesContext.getCurrentInstance();
+	context.addMessage(null, new FacesMessage(message));
+	}
+public static void unselectListener(UnselectEvent event) {
+	String itemSelected = event.getObject().toString();
+	String message =
+	String.format("Removed '%s' from selections", itemSelected);
+	FacesContext context = FacesContext.getCurrentInstance();
+	context.addMessage(null, new FacesMessage(message));
+	}	
+
+public String sectionDivide(){
+	System.out.println("sectionDivide");
+	for(int i=0;i<((Admin) userInfoBean.getUser()).getCurrentCourse().getSections().size();i++)
+	((Admin) userInfoBean.getUser()).getCurrentCourse().getSections().get(i).divideSection(((Admin) userInfoBean.getUser()).getCurrentCourse().getSubSectionPerSec());
+	//Every Section of this course is divided 
+	System.out.println("sectionDivide.....");
+	return "CourseMainPage";
+}
+
+
+public String taskAssignment(){
+	
+	((Admin) userInfoBean.getUser()).getCurrentCourse().assignTask();
+	return "CourseMainPage";
+}
+
+public String sectionGroup(){
+	((Admin) userInfoBean.getUser()).getCurrentCourse().sectionGroupAssign();
+	return "CourseMainPage";
+}
+}

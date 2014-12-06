@@ -1,0 +1,66 @@
+package com.eece496.webapp.jdbcdao;
+
+import static org.junit.Assert.*;
+
+import javax.inject.Inject;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.eece496.webapp.dao.UserDAO;
+import com.eece496.webapp.pojo.Student;
+import com.eece496.webapp.pojo.Ta;
+import com.eece496.webapp.pojo.User;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration({ "file:src/main/webapp/WEB-INF/spring/root-context.xml" })
+public class UserJdbcDAOTest {
+
+	@Inject
+	private UserDAO userDao;
+
+	@Test
+	public void userExisted() {
+		User user = this.userDao.getUser("TestAdmin", "TestAdmin");
+		assertEquals("message", 1, user.getId());
+	}
+
+	@Test
+	public void userNotExisted() {
+		User user = null;
+		try {
+			user = this.userDao.getUser("TestAdmin", "Testadmin");
+		} catch (Exception ex) {
+			System.out.println("ex");
+		}
+		assertNull("message", user);
+	}
+
+	@Test
+	public void taExisted() {
+		Ta ta = (Ta) this.userDao.getUser("TestTa", "TestTa");
+		assertEquals("message", 2, ta.getId());
+		assertEquals("message", true,
+				ta.getUsername().equalsIgnoreCase("testta"));
+		assertEquals("message", true, ta.getPassword().equals("TestTa"));
+		assertEquals("message", 2, ta.getAuthorization());
+		assertEquals("message", true, ta.getStudentNumber().equals("40383091"));
+	}
+
+	@Test
+	public void studentExisted() {
+		Student student = (Student) this.userDao.getUser("Teststudent",
+				"TestStudent");
+		assertEquals("message", 3, student.getId());
+		assertEquals("message", true,
+				student.getUsername().equalsIgnoreCase("Teststudent"));
+		assertEquals("message", true,
+				student.getPassword().equals("TestStudent"));
+		assertEquals("message", 3, student.getAuthorization());
+		assertEquals("message", true,
+				student.getStudentNumber().equals("40383092"));
+	}
+
+}

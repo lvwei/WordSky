@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html">
+	<h:head>
+
+	</h:head>
+
+	<h:body>
+	<h:form>
+    <p:dataGrid var="ta" value="#{userInfoBean.user.currentCourse.tas}" >  
+        <p:panel header="TA: #{ta.id} #{ta.lastName}  #{ta.firstName}" >  
+            <h:panelGrid  >  
+            	<h:outputLabel  value="Lastname: "/>	
+            	<h:outputText value="#{ta.lastName}" />  
+            	<h:outputLabel  value="Firstname: "/>
+                <h:outputText value="#{ta.firstName}" /> 
+        <p:commandButton  value="Reassign to this ta"
+				action="#{CoursePageBean.changeAssignedTaFinish}" actionListener="#{HolddateBean.changeAssignedTaFinishListener}" ajax="false">
+				<f:attribute name="NewAssignTa" value="#{ta}" />
+		</p:commandButton>
+            </h:panelGrid>  
+        </p:panel>  
+    </p:dataGrid>
+   </h:form>		
+	</h:body>
+</f:view>
+</html>

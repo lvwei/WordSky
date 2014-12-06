@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	
+<h:head>
+</h:head>
+
+
+<h:body>
+<div>
+<h:outputLabel for="name" value="Logged in as(Admin): #{CWLLoginBean.user.username}" style="font-weight:bold" />
+</div>
+	<h1></h1>       
+<p:accordionPanel multiple="true">  
+    <p:tab title="Basic information">  
+    <h:form>    	
+        <h:panelGrid columns="2" cellpadding="10">  
+			<h:outputLabel  value="UserAccount: #{CWLLoginBean.user.username}" style="font-weight:bold" />
+ 			<h:outputLabel  value="Name:#{CWLLoginBean.user.lastName}  #{CWLLoginBean.user.firstName}" style="font-weight:bold" />      
+
+        	<p:commandButton  value="Change Information"
+				action="#{CWLLoginBean.changeInfo}" ajax="false" />
+
+			<p:commandButton  value="Change Password"
+				action="#{CWLLoginBean.changePassword}" ajax="false" />
+		
+        </h:panelGrid>          
+ 	</h:form> 
+    </p:tab>  
+    
+    <p:tab title="Select student">  
+    <h:form>   
+<h2>Choose Student</h2>
+<h:outputLabel  value="Last student choosen: #{CWLLoginBean.user.courses.target[CWLLoginBean.user.currentCourse].selectStudent}" style="font-weight:bold" />
+<p:messages id="messages"/>
+<p:autoComplete value="#{CWLLoginBean.user.courses.target[CWLLoginBean.user.currentCourse].selectStudent}"
+completeMethod="#{CWLLoginBean.suggestedStudent}"
+required="true"
+requiredMessage="You must choose a language"
+>
+<p:ajax event="itemSelect"
+listener="#{CWLLoginBean.selectListener}"
+update="messages"/>
+<p:ajax event="itemUnselect"
+listener="#{CWLLoginBean.unselectListener}"
+update="messages"/>
+</p:autoComplete>
+<p:commandButton action="#{CWLLoginBean.user.courses.target[CWLLoginBean.user.currentCourse].chooseStudent}"
+value="Choose" ajax="false"/>
+ 	</h:form> 	
+     </p:tab> 
+    
+    <p:tab title="Students">
+    <h:form>
+    <h:outputLabel  value="Course: #{CWLLoginBean.user.courses.target[CWLLoginBean.user.currentCourse].courseName}" style="font-weight:bold" />
+  	<br>
+  	</br>
+  	<h:outputLabel  value="Total students registed: #{CWLLoginBean.user.courses.target[CWLLoginBean.user.currentCourse].numOfStudents}" style="font-weight:bold" />
+    <br>
+  	</br>  		
+  	<h:outputLabel  value="Number of students to add"/>	
+  	<p:spinner min="1" value="#{CWLLoginBean.user.courses.target[CWLLoginBean.user.currentCourse].studentToAdd}">
+
+	</p:spinner>
+      			<p:commandButton  value="Add student"
+				action="#{CWLLoginBean.addStudent}" ajax="false" />  
+				
+    
+      			<p:commandButton  value="Save change"
+				action="#{CWLLoginBean.returnMainPage}" ajax="false" />  
+				<br></br>
+				<br></br>
+				<a href="AdminMainPage.xhtml">Reload this page(not save changes)</a> 
+    <p:scrollPanel >  
+    			<br></br>
+    <p:dataGrid var="student" value="#{CWLLoginBean.user.courses.target[CWLLoginBean.user.currentCourse].students}" >  
+        <p:panel header="#{student.lastName}  #{student.firstName}" >  
+            <h:panelGrid  >  
+            	<h:outputLabel  value="Lastname: "/>	
+            	<h:inputText value="#{student.lastName}" />  
+            	<h:outputLabel  value="Firsttname: "/>
+                <h:inputText value="#{student.firstName}" /> 
+                <h:outputLabel  value="Studentnumber: "/> 
+                <h:inputText value="#{student.studentNumber}" />
+            </h:panelGrid>  
+        </p:panel>  
+    </p:dataGrid>  
+</p:scrollPanel> 
+
+
+
+	</h:form>
+    </p:tab>
+    
+    
+    <p:tab title="Select courses">
+       <h:form>   
+    <p:growl id="msg" showDetail="true" escape="false" />  	
+    <p:pickList id="coursesPickList" value="#{CWLLoginBean.user.courses}" var="course" effect="bounce"  
+                    itemValue="#{course}" itemLabel="#{course.courseName}"   converter="ProjectConverter"
+                    showSourceControls="true" showTargetControls="true" showCheckbox="true"  
+                    showSourceFilter="true" showTargetFilter="true" filterMatchMode="contains" >  
+  
+        <f:facet name="sourceCaption">Available courses</f:facet>  
+        <f:facet name="targetCaption">Active courses</f:facet>   
+        
+        <p:ajax event="transfer" listener="#{CWLLoginBean.onTransfer}" update="msg" />  
+	    <p:column >  
+	       #{course.courseName}  
+	    </p:column>
+    </p:pickList>    
+    
+    <p:commandButton id="courseSubmit" value="Submit" update="displayCourses" oncomplete="courseDialog.show()" style="margin-top:5px"/>      
+ 	
+ 	<p:dialog modal="true" showEffect="fade" hideEffect="fade" widgetVar="courseDialog">  
+        <h:panelGrid id="displayCourses" columns="2">  
+            <h:outputText value="Source: " style="font-weight:bold"/>  
+            <ui:repeat value="#{CWLLoginBean.user.courses.source}" var="course">  
+                <h:outputText value="#{course.courseName}" style="margin-right:5px" />  
+            </ui:repeat>  
+  
+            <h:outputText value="Target: " style="font-weight:bold"/>  
+            <ui:repeat value="#{CWLLoginBean.user.courses.target}" var="course">  
+                <h:outputText value="#{course.courseName}" style="margin-right:5px" />  
+            </ui:repeat>  
+        </h:panelGrid>  
+    </p:dialog>
+		</h:form> 
+    </p:tab>
+</p:accordionPanel>
+
+
+</h:body>
+</html>

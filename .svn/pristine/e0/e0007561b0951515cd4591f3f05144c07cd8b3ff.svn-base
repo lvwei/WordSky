@@ -1,0 +1,13 @@
+package com.eece496.webapp.dao;
+
+import java.util.List;
+
+import com.eece496.webapp.pojo.Student;
+import com.eece496.webapp.pojo.Ta;
+import com.eece496.webapp.pojo.User;
+
+public interface HolddateDAO {
+	public  Student getAbsentStudentOfHolddate(int holddateId);
+	public  Student getStudentOfHolddate(int holddateId);
+	public  Ta getTaOfHolddate(int holddateId);
+}

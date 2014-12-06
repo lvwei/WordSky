@@ -1,0 +1,38 @@
+package com.eece496.webapp.dao;
+
+import java.util.List;
+
+import org.primefaces.model.DualListModel;
+
+import com.eece496.webapp.pojo.Course;
+import com.eece496.webapp.pojo.Student;
+import com.eece496.webapp.pojo.Ta;
+import com.eece496.webapp.pojo.User;
+
+public interface UserDAO {
+	
+	public void addTaMarksCourse(int taId, int courseId);
+	
+	public void addTa(Ta ta);
+	
+	public void addStudentRegisterCourse(int studentId,int courseId);
+	
+	public void addStudentInGroup(int studentId,int groupId );
+	
+	public void addStudent(Student student);
+	
+	public User getUser(String username, String password);
+
+	public List<Ta> getTaListMarkCourse(int courseId);
+
+	public List<Student> getStudentListRegisterInCourse(int courseId);
+
+	public List<Student> getGroupStudent(int groupId);
+
+	public Student getAbsentStudentOfHolddate(int holddateId);
+
+	public Student getStudentOfHolddate(int holddateId);
+
+	public Ta getTaOfHolddate(int holddateId);
+
+}

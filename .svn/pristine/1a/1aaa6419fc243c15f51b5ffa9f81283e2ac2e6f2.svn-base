@@ -1,0 +1,48 @@
+package com.eece496.webapp.jdbcdao;
+
+import static org.junit.Assert.*;
+
+import java.util.Calendar;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.eece496.webapp.dao.SectionDAO;
+import com.eece496.webapp.pojo.Section;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration({ "file:src/main/webapp/WEB-INF/spring/root-context.xml" })
+public class SectionJdbcDAOTest {
+	
+	@Inject
+	private SectionDAO sectionDao;
+
+	@Test
+	public void testGetIndividualSection() {
+		Section section = this.sectionDao.getIndividualSection(1);
+		assertNotNull("", section);
+		assertEquals("", 1, section.getId());
+		section = this.sectionDao.getIndividualSection(2);
+		assertNotNull("", section);
+		assertEquals("", 2, section.getId());
+		section = this.sectionDao.getIndividualSection(3);
+		assertNull("", section);
+	}
+
+	@Test
+	public void testGetSection() {
+		List<Section> sectionList = this.sectionDao.getSection(1);
+		assertNotNull("", sectionList);
+		assertEquals("", 2, sectionList.size());
+		sectionList = null;
+		sectionList = this.sectionDao.getSection(2);
+		assertNotNull("", sectionList);
+		assertEquals("", 0, sectionList.size());
+	}
+
+}

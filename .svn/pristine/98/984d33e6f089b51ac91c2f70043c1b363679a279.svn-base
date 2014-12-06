@@ -1,0 +1,72 @@
+package com.eece496.webapp.pojo;
+
+import java.util.Date;
+
+public class MarkTableRow {
+	private String studentNumber;
+	private String firstName;
+	private String lastName;
+	private int mark;
+	private String course;
+	private Date date;
+	private String sectionTime;
+	private boolean isIndividualMark;
+	private boolean isModified;
+
+	public MarkTableRow(String studentNumber, String firstName,
+			String lastName, int mark, String course, Date date,
+			String sectionTime, boolean isIndividualMark) {
+		super();
+		this.studentNumber = studentNumber;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.mark = mark;
+		this.course = course;
+		this.date = date;
+		this.sectionTime = sectionTime;
+		this.isIndividualMark = isIndividualMark;
+		this.isModified = false;
+	}
+
+	public String getStudentNumber() {
+		return studentNumber;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public int getMark() {
+		return mark;
+	}
+
+	public String getCourse() {
+		return course;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public String getSectionTime() {
+		return sectionTime;
+	}
+
+	public boolean isIndividualMark() {
+		return isIndividualMark;
+	}
+
+	public boolean isModified() {
+		return isModified;
+	}
+
+	public void setMark(int mark) {
+		this.isModified = true;
+		this.mark = mark;
+	}
+
+}

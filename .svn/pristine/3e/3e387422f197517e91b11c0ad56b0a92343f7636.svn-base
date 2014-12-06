@@ -1,0 +1,22 @@
+package com.eece496.webapp.dao;
+
+import java.util.Date;
+import java.util.List;
+
+import com.eece496.webapp.pojo.Group;
+import com.eece496.webapp.pojo.HoldDate;
+import com.eece496.webapp.pojo.Section;
+import com.eece496.webapp.pojo.Student;
+import com.eece496.webapp.pojo.Subsection;
+import com.eece496.webapp.pojo.User;
+
+public interface SubsectionDAO {
+
+    public void addSubsection(Subsection subsection,int sectionId);
+    public Subsection getIndividualSubsection(int subsectionId);
+	
+	
+	public  List<Subsection>getSubsection(int sectionId);
+	
+
+}

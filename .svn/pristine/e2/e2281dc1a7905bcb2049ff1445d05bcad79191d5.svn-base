@@ -1,0 +1,83 @@
+package com.eece496.webapp.jsfbean;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import org.springframework.context.annotation.Scope;
+
+import com.eece496.webapp.dao.CourseDAO;
+import com.eece496.webapp.dao.UserDAO;
+import com.eece496.webapp.helperclass.ChangePassword;
+import com.eece496.webapp.pojo.Admin;
+import com.eece496.webapp.pojo.User;
+import com.eece496.webapp.service.CWLAccountService;
+
+@Named("CWLLoginBean")
+@Scope("request")
+public class CWLLoginBean {
+	private String cwlLoginName;
+	private String cwlPassword;
+	private ChangePassword changePassword;
+
+	@Inject
+	UserInfoBean userInfoBean;
+	@Inject
+	CWLAccountService cwlAccountService;
+	@Inject
+	UserDAO userDAO;
+	@Inject
+	CourseDAO courseDAO;
+
+	public CWLLoginBean() {
+
+	}
+
+	public String getCwlLoginName() {
+		return cwlLoginName;
+	}
+
+	public void setCwlLoginName(String cwlLoginName) {
+		this.cwlLoginName = cwlLoginName;
+	}
+
+	public String getCwlPassword() {
+		return cwlPassword;
+	}
+
+	public void setCwlPassword(String cwlPassword) {
+		this.cwlPassword = cwlPassword;
+	}
+
+	public String cwlLogin() {
+		User currentUser = null;
+		try {
+			currentUser = this.userDAO.getUser(this.cwlLoginName,
+					this.cwlPassword);
+		} catch (Exception ex) {
+			this.printLoginFailureMsg();
+			return null;
+		}
+		if (currentUser != null) {
+			this.userInfoBean.setUser(new Admin(currentUser));
+
+			// fake data
+			((Admin) this.userInfoBean.getUser()).setCourses(courseDAO
+					.getCourses(0));
+
+			return "AdminMainPage.xhtml";
+		} else {
+			this.printLoginFailureMsg();
+			return null;
+		}
+	}
+
+	private void printLoginFailureMsg() {
+		FacesContext.getCurrentInstance().addMessage(
+				null,
+				new FacesMessage(FacesMessage.SEVERITY_ERROR,
+						"Failed to login", "Incorrect Username or Password !"));
+	}
+
+}

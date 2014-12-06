@@ -1,0 +1,65 @@
+package com.eece496.webapp.jdbcdao;
+
+import static org.junit.Assert.*;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.eece496.webapp.dao.MarkDAO;
+import com.eece496.webapp.pojo.Mark;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration({ "file:src/main/webapp/WEB-INF/spring/root-context.xml" })
+public class MarkJdbcDAOTest {
+	
+	@Inject 
+	MarkDAO markDao;
+	
+
+	@Test
+	public void testAddMark() {
+		//fail("Not yet implemented");
+	}
+
+	@Test
+	public void testGetIndividualMark() {
+		Mark mark = this.markDao.getIndividualMark(10);
+		assertNull("", mark);
+		mark = this.markDao.getIndividualMark(1);
+		assertNotNull("", mark);
+		assertEquals("", 1, mark.getId());
+		assertEquals("", 6, mark.getStudentId());
+		assertEquals("", 75, mark.getMark());
+		assertEquals("", 1, mark.getHoldDateId());
+		assertEquals("", true, mark.isIndividualMark());
+		mark = this.markDao.getIndividualMark(4);
+		assertNotNull("", mark);
+		assertEquals("", 4, mark.getId());
+		mark = this.markDao.getIndividualMark(5);
+		assertNotNull("", mark);
+		assertEquals("", 5, mark.getId());
+	}
+
+	@Test
+	public void testGetGroupMarkOfHolddate() {
+		List<Mark> markList = null;
+		markList = this.markDao.getGroupMarkOfHolddate(1);
+		assertNotNull("", markList);
+		assertEquals("", 3, markList.size());
+		markList = null;
+		markList = this.markDao.getGroupMarkOfHolddate(2);
+		assertNotNull("", markList);
+		assertEquals("", 0, markList.size());
+		markList = null;
+		markList = this.markDao.getGroupMarkOfHolddate(3);
+		assertNotNull("", markList);
+		assertEquals("", 0, markList.size());
+	}
+
+}

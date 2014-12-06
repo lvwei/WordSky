@@ -1,0 +1,30 @@
+package com.eece496.webapp.jsfbean;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
+import org.springframework.context.annotation.Scope;
+
+import com.eece496.webapp.pojo.Admin;
+import com.eece496.webapp.pojo.User;
+
+
+@Named("TaPageBean")
+@Scope("request")
+public class TaPageBean  {
+	@Inject
+	UserInfoBean userInfoBean;
+	
+	
+	public String taMainPage(){
+		return "TaMainPage.xhtml";
+	}
+}

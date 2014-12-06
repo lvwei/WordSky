@@ -1,0 +1,46 @@
+package com.eece496.webapp.jsfbean;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import org.springframework.context.annotation.Scope;
+
+import com.eece496.webapp.ProjectConfiguration;
+import com.eece496.webapp.service.CWLAccountService;
+
+@Named("CWLLoginBean")
+@Scope("request")
+public class CWLLoginBean {
+	private String cwlLoginName;
+	private String cwlPassword;
+	
+	@Inject
+	CWLAccountService cwlAccountService;
+
+	public String getCwlLoginName() {
+		return cwlLoginName;
+	}
+
+	public void setCwlLoginName(String cwlLoginName) {
+		this.cwlLoginName = cwlLoginName;
+	}
+
+	public String getCwlPassword() {
+		return cwlPassword;
+	}
+
+	public void setCwlPassword(String cwlPassword) {
+		this.cwlPassword = cwlPassword;
+	}
+
+	public String cwlLogin() {
+		if(this.cwlAccountService.login(this.cwlLoginName, this.cwlPassword)){
+			return "hello";
+		}else{
+			return null;
+		}
+	}
+}

@@ -1,0 +1,225 @@
+package com.eece496.webapp.jdbcdao;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import org.primefaces.model.DualListModel;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+
+import com.eece496.webapp.dao.UserDAO;
+import com.eece496.webapp.pojo.Course;
+import com.eece496.webapp.pojo.Student;
+import com.eece496.webapp.pojo.Ta;
+import com.eece496.webapp.pojo.User;
+
+@Named
+public class UserJdbcDAO implements UserDAO {
+
+	@Inject
+	private JdbcTemplate jdbcTemplate;
+
+	@Override
+	public User getUser(String username, String password) {
+		int userId = this.getUserId(username, password);
+		if (userId <= 0) {
+			return null;
+		}
+		int auth = this.getUserAuth(userId);
+		if (auth == User.ADMIN) {
+			return this.getAdmin(userId);
+		} else if (auth == User.TA) {
+			return this.getTa2(userId);
+		} else if (auth == User.STUDENT) {
+			return this.getStudent2(userId);
+		}
+		return null;
+	}
+
+	@Override
+	public List<Ta> getTa(int courseId) {
+		List<Ta> taList = new LinkedList<Ta>();
+		final String SQL_QUERY = "SELECT * FROM users, ta "
+				+ "WHERE users.id = ta.id AND users.id IN ("
+				+ "SELECT user_id FROM ta_marks_course "
+				+ "WHERE course_id = ?" + ")";
+		try {
+			taList = this.jdbcTemplate.query(SQL_QUERY,
+					new Object[] { courseId }, new TaMapper());
+		} catch (Exception ex) {
+		}
+		return taList;
+	}
+
+	@Override
+	public List<Student> getStudent(int courseId) {
+		List<Student> studentList = new LinkedList<Student>();
+		final String SQL_QUERY = "SELECT * FROM users, students WHERE users.id = students.id AND users.id IN ( SELECT user_id FROM students_register_courses  WHERE course_id = ? )";
+		try {
+			studentList = this.jdbcTemplate.query(SQL_QUERY,
+					new Object[] { courseId }, new StudentMapper());
+		} catch (Exception ex) {
+		}
+		return studentList;
+	}
+
+	@Override
+	public List<Student> getGroupStudent(int groupId) {
+		List<Student> studentList = new LinkedList<Student>();
+		final String SQL_QUERY = "SELECT * FROM users, students WHERE users.id = students.id AND users.id IN ( SELECT user_id FROM students_in_groups  WHERE group_id= ? )";
+		try {
+			studentList = this.jdbcTemplate.query(SQL_QUERY,
+					new Object[] { groupId }, new StudentMapper());
+		} catch (Exception ex) {
+		}
+		return studentList;
+	}
+
+	@Override
+	public Ta getTaOfHolddate(int holddateId) {
+		int userId = -1;
+		final String SQL_QUERY = "select ta_id from hold_dates where id = ?";
+		try {
+			userId = this.jdbcTemplate.queryForInt(SQL_QUERY,
+					new Object[] { holddateId });
+		} catch (Exception ex) {
+		}
+		return this.getTa2(userId);
+	}
+
+	@Override
+	public Student getStudentOfHolddate(int holddateId) {
+		int userId = -1;
+		final String SQL_QUERY = "select student_id from hold_dates where id = ?";
+		try {
+			userId = this.jdbcTemplate.queryForInt(SQL_QUERY,
+					new Object[] { holddateId });
+		} catch (Exception ex) {
+		}
+		return this.getStudent2(userId);
+	}
+
+	@Override
+	public Student getAbsentStudentOfHolddate(int holddateId) {
+		int userId = -1;
+		final String SQL_QUERY = "select absent_student_id from hold_dates where id = ?";
+		try {
+			userId = this.jdbcTemplate.queryForInt(SQL_QUERY,
+					new Object[] { holddateId });
+		} catch (Exception ex) {
+		}
+		return this.getStudent2(userId);
+	}
+
+	private int getUserId(String username, String password) {
+		int userId = -1;
+		final String SQL_QUERY = "select id from users where username LIKE ? and password LIKE ?";
+		try {
+			userId = this.jdbcTemplate.queryForInt(SQL_QUERY, new Object[] {
+					username, password });
+		} catch (Exception ex) {
+		}
+		return userId;
+	}
+
+	private int getUserAuth(int userId) {
+		int auth = -1;
+		final String SQL_QUERY = "select authorization from users where id = ?";
+		try {
+			auth = this.jdbcTemplate.queryForInt(SQL_QUERY,
+					new Object[] { userId });
+		} catch (Exception ex) {
+		}
+		return auth;
+	}
+
+	private User getAdmin(int userId) {
+		User user = null;
+		final String SQL_QUERY = "select * from users where id = ?";
+		try {
+			user = this.jdbcTemplate.queryForObject(SQL_QUERY,
+					new Object[] { userId }, new AdminMapper());
+		} catch (Exception ex) {
+		}
+		return user;
+	}
+
+	private Ta getTa2(int userId) {
+		Ta ta = null;
+		final String SQL_QUERY = "select * from users, ta where users.id = ? and users.id = ta.id";
+		try {
+			ta = this.jdbcTemplate.queryForObject(SQL_QUERY,
+					new Object[] { userId }, new TaMapper());
+		} catch (Exception ex) {
+		}
+		return ta;
+	}
+
+	private Student getStudent2(int userId) {
+		Student student = null;
+		final String SQL_QUERY = "select * from users, students where users.id = ? and users.id = students.id";
+		try {
+			student = this.jdbcTemplate.queryForObject(SQL_QUERY,
+					new Object[] { userId }, new StudentMapper());
+		} catch (Exception ex) {
+		}
+		return student;
+	}
+
+	private static final class AdminMapper implements RowMapper<User> {
+
+		@Override
+		public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+			User user = new User();
+			user.setId(rs.getInt(1));
+			user.setUsername(rs.getString(2));
+			user.setPassword(rs.getString(3));
+			user.setFirstName(rs.getString(4));
+			user.setLastName(rs.getString(5));
+			user.setAuthorization(rs.getInt(6));
+			return user;
+		}
+
+	}
+
+	private static final class TaMapper implements RowMapper<Ta> {
+
+		@Override
+		public Ta mapRow(ResultSet rs, int rowNum) throws SQLException {
+			Ta ta = new Ta();
+			ta.setId(rs.getInt(1));
+			ta.setUsername(rs.getString(2));
+			ta.setPassword(rs.getString(3));
+			ta.setFirstName(rs.getString(4));
+			ta.setLastName(rs.getString(5));
+			ta.setAuthorization(rs.getInt(6));
+			ta.setStudentNumber(rs.getString(8));
+			return ta;
+		}
+
+	}
+
+	private static final class StudentMapper implements RowMapper<Student> {
+
+		@Override
+		public Student mapRow(ResultSet rs, int rowNum) throws SQLException {
+			Student student = new Student();
+			student.setId(rs.getInt(1));
+			student.setUsername(rs.getString(2));
+			student.setPassword(rs.getString(3));
+			student.setFirstName(rs.getString(4));
+			student.setLastName(rs.getString(5));
+			student.setAuthorization(rs.getInt(6));
+			student.setStudentNumber(rs.getString(8));
+			return student;
+		}
+
+	}
+
+}

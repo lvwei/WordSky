@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html">
+	<h:head>
+
+	</h:head>
+
+	<h:body>
+	
+<div>
+<h:outputLabel value="Ta: #{userInfoBean.user.id} #{userInfoBean.user.lastName} #{userInfoBean.user.firstName}" style="font-weight:bold" />
+</div>
+	
+<div>
+<h:outputLabel value="course: #{userInfoBean.user.course.courseName}" style="font-weight:bold" />
+</div>	
+
+<p:scrollPanel >  
+<br></br>
+<ui:repeat var="section" value="#{userInfoBean.user.course.sections}"   > 
+                  
+ <ui:repeat var="subsection" value="#{section.subSections}"  >  	
+        <ui:repeat var="holddate" value="#{subsection.holdDate}"  >
+        <p:panel header="Holddate: " rendered="#{holddate.ta.id==userInfoBean.user.id}" >
+        <h:form>
+        <h:outputLabel  value="Subsection start time "/> 
+       	<p:calendar value="#{subsection.startTime}" pattern="HH:mm" timeOnly="true"/>
+       	<br></br>
+        <h:outputLabel  value="Subsection end time "/> 
+        <p:calendar value="#{subsection.endTime}" pattern="HH:mm" timeOnly="true"/> 
+        <br></br>
+        <h:outputLabel  value="Hold date: "/> 
+       	<p:calendar value="#{holddate.date}" />
+       	<br></br>
+       	<h:outputLabel  value="Assigned student: "/> 
+       	<h:outputText value=" #{holddate.student.lastName}  #{holddate.student.firstName}" />          
+        <br></br>  
+        </h:form>  
+        <h:form>   
+        <h:outputLabel  value="Individual Mark: "/> 
+        <br></br> 
+        <p:spinner min="-1" max="10" value="#{holddate.individualMark.mark} "/>  
+		<br></br>
+		 <h:commandButton  value="Assign individual mark"
+				action="#{TaPageBean.taMainPage}" /> 
+		<br></br>
+		</h:form>
+		<h:form> 
+        <p:outputLabel  value="Group Marks: "/> 
+        <br></br> 
+        </h:form>      
+        <ui:repeat var="groupmark" value="#{holddate.groupMark}" >
+        <h:form>
+        <p:panel>
+        <p:outputLabel  value="#{groupmark.student.lastName}  #{groupmark.student.firstName} :"/> 
+        <p:spinner  value=" #{groupmark.mark} "> 
+        </p:spinner>
+        <br></br>
+         </p:panel>
+                <h:commandButton  value="Assign group mark"
+				action="#{TaPageBean.taMainPage}" /> 
+         </h:form> 
+         <h:form> 
+                 <p:commandButton  value="Report absent and reassign to this student"
+				action="#{TaPageBean.taMainPage}" actionListener="#{userInfoBean.user.course.reportAbsentListener}" ajax="false" rendered="#{!holddate.studentAbsent}" >
+				<f:attribute name="HD" value="#{holddate}" />
+				<f:attribute name="newStudent" value="#{groupmark.student}" />
+				</p:commandButton>
+		</h:form>
+        </ui:repeat>
+        </p:panel>  
+        </ui:repeat>             	    
+    </ui:repeat>                        
+ </ui:repeat>
+</p:scrollPanel> 	
+		
+	</h:body>
+</f:view>
+</html>

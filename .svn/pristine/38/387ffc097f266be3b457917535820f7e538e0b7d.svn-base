@@ -1,0 +1,88 @@
+package com.eece496.webapp.jsfbean;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.faces.application.FacesMessage;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.TransferEvent;
+import org.primefaces.event.UnselectEvent;
+import org.primefaces.model.DualListModel;
+import org.springframework.context.annotation.Scope;
+
+import com.eece496.webapp.ProjectConfiguration;
+import com.eece496.webapp.dao.UserDAO;
+import com.eece496.webapp.developdao.UserDevDAO;
+import com.eece496.webapp.helperclass.ChangePassword;
+import com.eece496.webapp.pojo.Admin;
+import com.eece496.webapp.pojo.Course;
+import com.eece496.webapp.pojo.Student;
+import com.eece496.webapp.pojo.User;
+import com.eece496.webapp.service.CWLAccountService;
+import com.eece496.webapp.serviceimpl.CWLAccountServiceImpl;
+
+@Named("CWLLoginBean")
+@Scope("request")
+public class CWLLoginBean {
+	private String cwlLoginName;
+	private String cwlPassword;
+	private ChangePassword changePassword;
+
+	@Inject
+	UserInfoBean userInfoBean;
+	@Inject
+	CWLAccountService cwlAccountService;
+	@Inject
+	UserDAO userDAO;
+
+	public CWLLoginBean() {
+
+	}
+
+	public String getCwlLoginName() {
+		return cwlLoginName;
+	}
+
+	public void setCwlLoginName(String cwlLoginName) {
+		this.cwlLoginName = cwlLoginName;
+	}
+
+	public String getCwlPassword() {
+		return cwlPassword;
+	}
+
+	public void setCwlPassword(String cwlPassword) {
+		this.cwlPassword = cwlPassword;
+	}
+
+	public String cwlLogin() {
+		User currentUser = this.userDAO.getUser(this.cwlLoginName, this.cwlPassword);
+		if (currentUser != null) {
+			this.userInfoBean.setUser(currentUser);
+			this.userInfoBean.getUser().setUsername(this.cwlLoginName);
+			this.userInfoBean.getUser().setPassword(this.cwlPassword);
+
+			// fake data
+			((Admin) this.userInfoBean.getUser()).setCourses(userDAO
+					.getCourses(0));
+
+			return "AdminMainPage.xhtml";
+		} else {
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Failed to login",
+							"Incorrect Username or Password !"));
+			return null;
+		}
+	}
+
+}

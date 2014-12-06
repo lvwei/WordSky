@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html">
+	<h:head>
+
+	</h:head>
+
+	<h:body>
+
+		<div>
+			<h:outputLabel
+				value="Ta: #{userInfoBean.user.id} #{userInfoBean.user.lastName} #{userInfoBean.user.firstName}"
+				style="font-weight:bold" />
+		</div>
+
+		<div>
+			<h:outputLabel value="course: #{userInfoBean.user.course.courseName}"
+				style="font-weight:bold" />
+		</div>
+
+		<div>
+			<h:outputLabel value="#{TaPageBean.message}" style="font-weight:bold" />
+		</div>
+		<p:accordionPanel>
+			<p:tab title="Mark">
+				<h:form>
+					<h:outputLabel value="Choose a date " />
+					<p:calendar value="#{TaPageBean.date}">
+						<p:ajax event="dateSelect" listener="#{TaPageBean.handleDate}"
+							update="potential" />
+					</p:calendar>
+					<p:panel header="Subsections in the selected day: " id="potential">
+						<ui:repeat var="xhd" value="#{TaPageBean.exhd}">
+							<p:panel>
+								<h:outputText value="Start time" />
+								<p:calendar value="#{xhd.startTime}" pattern="HH:mm"
+									timeOnly="true" />
+								<br></br>
+								<h:outputText value="End time" />
+								<p:calendar value="#{xhd.endTime}" pattern="HH:mm"
+									timeOnly="true" />
+								<br></br>
+								<h:outputText value="Location:" />
+								<h:outputText value="#{xhd.room}" />
+								<p:commandButton value="Mark this"
+									action="#{TaPageBean.markPage}"
+									actionListener="#{TaPageBean.markListener}" ajax="false"
+									rendered="#{ta.username!='default'}">
+									<f:attribute name="xhd" value="#{xhd}" />
+								</p:commandButton>
+							</p:panel>
+						</ui:repeat>
+					</p:panel>
+				</h:form>
+			</p:tab>
+
+			<p:tab title="Mark overview">
+				<p:growl id="messages" showDetail="true" />
+				<h:form>
+					<p:dataTable id="markTable" var="markTableRow" editable="true"
+						editMode="cell" value="#{markTableBean.markTableRows}"
+						widgetVar="marksTable" emptyMessage="No marks found for you"
+						filteredValue="#{markTableBean.filteredTableRows}"
+						paginator="true" rows="10"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+						rowsPerPageTemplate="5,10,15">
+						<!-- filteredValue="#{markTableBean.filteredTableRows}"  sortMode="multiple" -->
+						<!-- 				<f:facet name="header">
+				<p:outputPanel>
+					<h:outputText value="Search all fields:" />
+					<p:inputText id="globalFilter" onkeyup="markTableBean.filter()"
+						style="width:150px" />
+				</p:outputPanel>
+				</f:facet> -->
+
+						<p:column id="studentNumColumn"
+							filterBy="#{markTableRow.studentNumber}"
+							headerText="Student Number" filterMatchMode="startsWith">
+							<h:outputText value="#{markTableRow.studentNumber}" />
+						</p:column>
+
+						<p:column id="firstNameColumn"
+							filterBy="#{markTableRow.firstName}" headerText="First Name"
+							filterMatchMode="contains">
+							<h:outputText value="#{markTableRow.firstName}" />
+						</p:column>
+
+						<p:column id="lastNameColumn" filterBy="#{markTableRow.lastName}"
+							headerText="last Name" filterMatchMode="contains">
+							<h:outputText value="#{markTableRow.lastName}" />
+						</p:column>
+
+						<p:column id="markColumn" filterBy="#{markTableRow.mark}"
+							headerText="Mark" filterMatchMode="startsWith">
+
+							<p:cellEditor>
+								<f:facet name="output">
+									<h:outputText value="#{markTableRow.mark}" />
+								</f:facet>
+								<f:facet name="input">
+									<p:inputText value="#{markTableRow.mark}" style="width:96%"
+										label="Mark" />
+								</f:facet>
+							</p:cellEditor>
+						</p:column>
+
+						<p:column id="courseColumn" filterBy="#{markTableRow.course}"
+							headerText="Course" filterMatchMode="contains">
+							<h:outputText value="#{markTableRow.course}" />
+						</p:column>
+
+						<p:column id="dateColumn" filterBy="#{markTableRow.date}"
+							headerText="Date" filterMatchMode="contains">
+							<h:outputText value="#{markTableRow.date}" />
+						</p:column>
+
+						<p:column id="sectionTimeColumn"
+							filterBy="#{markTableRow.sectionTime}" headerText="Section Time"
+							filterMatchMode="contains">
+							<h:outputText value="#{markTableRow.sectionTime}" />
+						</p:column>
+
+						<p:column id="isIdividualMarkColumn"	headerText="Mark Type" >
+							<h:outputText value="Individual"
+								rendered="#{markTableRow.isIndividualMark}" />
+							<h:outputText value="Group"
+								rendered="#{markTableRow.isIndividualMark==false}" />
+						</p:column>
+					</p:dataTable>
+
+					<h:panelGrid columns="1">
+						<p:panel header="Export All Marks">
+							<h:commandLink>
+								<p:graphicImage value="/resources/img/xls.png" width="100"
+									height="100" />
+								<p:dataExporter type="xls" target="markTable" fileName="marks" />
+							</h:commandLink>
+
+							<h:commandLink>
+								<p:graphicImage value="/resources/img/pdf.png" width="100"
+									height="100" />
+								<p:dataExporter type="pdf" target="markTable" fileName="marks" />
+							</h:commandLink>
+
+							<h:commandLink>
+								<p:graphicImage value="/resources/img/csv.png" width="100"
+									height="100" />
+								<p:dataExporter type="csv" target="markTable" fileName="marks" />
+							</h:commandLink>
+
+							<h:commandLink>
+								<p:graphicImage value="/resources/img/xml.png" width="100"
+									height="100" />
+								<p:dataExporter type="xml" target="markTable" fileName="marks" />
+							</h:commandLink>
+						</p:panel>
+
+					</h:panelGrid>
+				</h:form>
+			</p:tab>
+		</p:accordionPanel>
+	</h:body>
+</f:view>
+</html>

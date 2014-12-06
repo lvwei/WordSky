@@ -1,0 +1,50 @@
+package com.eece496.webapp.developdao;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.eece496.webapp.dao.UserDAO;
+import com.eece496.webapp.pojo.Course;
+import com.eece496.webapp.pojo.Student;
+import com.eece496.webapp.pojo.Ta;
+import com.eece496.webapp.pojo.User;
+
+public class UserDevDAO implements UserDAO {
+	@Override
+	public User getUser(String username, String password) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+	public static List<Course>getCourse(){
+		List<Course> randCourse=new ArrayList<Course>();
+		randCourse.add(new Course("eece253T1"));
+		randCourse.add(new Course("eece253T2"));
+		randCourse.add(new Course("eece261T1"));
+		randCourse.add(new Course("eece261T2"));
+		return randCourse;
+	}
+	
+	public static List<Student>getStudent(){
+		List<Student> randStudent=new ArrayList<Student>();
+		for(int i=0;i<22;i++){
+			String last="L"+Integer.toString(i);
+			String first="F"+Integer.toString(i);
+			String s="S"+Integer.toString(i);
+		randStudent.add(new Student(last,first,s));
+		}
+
+		return randStudent;
+	}
+	
+	public static List<Ta>getTa(){
+		List<Ta> randTa=new ArrayList<Ta>();
+		for(int i=0;i<5;i++){
+		randTa.add(new Ta());
+		}
+
+		return randTa;
+	}
+
+}

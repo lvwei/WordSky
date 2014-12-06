@@ -1,0 +1,19 @@
+package com.eece496.webapp.jdbcdao.mapper;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.springframework.jdbc.core.RowMapper;
+
+import com.eece496.webapp.pojo.HoldDate;
+
+public class HoldDateMapper  implements RowMapper<HoldDate> {
+
+	@Override
+	public HoldDate mapRow(ResultSet rs, int numRow) throws SQLException {
+		HoldDate holdDate = new HoldDate();
+		
+		return holdDate;
+	}
+
+}

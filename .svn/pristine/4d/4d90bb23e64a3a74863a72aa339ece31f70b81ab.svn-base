@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<f:view contentType="text/html">
+	<h:head>
+
+	</h:head>
+
+	<h:body>
+	
+<div>
+<h:form>
+	<h:commandButton  value="Back"
+				action="#{SectionPageBean.returnCoursePage}" /> 
+</h:form>
+				
+<h:outputLabel value="Course #{userInfoBean.user.currentCourse.courseName}  Section #{userInfoBean.user.currentCourse.sections.indexOf(userInfoBean.user.currentCourse.currentSection)}"  style="font-weight:bold" />
+</div>
+<h:form>
+				<p:outputLabel value="Start time: " 
+				/> 
+				<p:calendar value="#{userInfoBean.user.currentCourse.currentSection.startTime}" pattern="HH:mm" timeOnly="true"/>
+				<br></br>
+				<h:outputLabel value="End time: " /> 
+				<p:calendar value="#{userInfoBean.user.currentCourse.currentSection.endTime}" pattern="HH:mm" timeOnly="true"/>
+				<br></br>
+				<h:outputLabel  value="Location(room): "/> 
+				<br></br>
+				<br></br>
+                <h:outputText value="#{userInfoBean.user.currentCourse.currentSection.room}" />
+
+</h:form>
+
+
+<h:form>
+    <h:outputLabel  value="Total hold times of this section: #{userInfoBean.user.currentCourse.currentSection.holdDate.size()}" style="font-weight:bold" />
+    <br>
+  	</br>  		
+  	<p:commandButton  value="Save change"
+				action="#{SectionPageBean.saveHoldDate}" ajax="false" /> 
+	<br>
+  	</br>  		
+  			
+  	<h:outputLabel  value="Number of times to hold"/>	
+  	<p:spinner min="1" value="#{userInfoBean.user.currentCourse.currentSection.holdDateToSet}">
+
+	</p:spinner>
+	<br></br>
+      			<p:commandButton  value="Set holding dates"
+				action="#{SectionPageBean.setHoldDate}" ajax="false" />  
+				
+    
+      			 
+				
+				<br></br>
+				<a href="SectionMainPage.xhtml">Reload this page(not save changes)</a> 
+				
+				
+<p:scrollPanel >  
+    <br></br>
+
+    <p:dataGrid var="holddate" value="#{userInfoBean.user.currentCourse.currentSection.holdDate}"  >  
+        <p:panel header="Hold date:   #{userInfoBean.user.currentCourse.currentSection.holdDate.indexOf(holddate)}" >  
+            <h:panelGrid  >  
+            	<p:calendar value="#{holddate}" />
+				<br></br>
+				
+            </h:panelGrid>  
+        </p:panel>  
+    </p:dataGrid>  
+</p:scrollPanel> 
+<br></br>
+</h:form>
+
+
+<p:accordionPanel  >  
+   
+    <p:tab title="Devided section view">
+
+    <h:form>
+
+				<a href="AdminMainPage.xhtml">Reload this page(not save changes)</a> 
+    <p:scrollPanel >  
+    			<br></br>
+    			
+    <p:dataGrid var="subsection" value="#{userInfoBean.user.currentCourse.currentSection.subSections}" >  
+        <p:panel header="Subsection #{userInfoBean.user.currentCourse.currentSection.subSections.indexOf(subsection)}" >  
+            <h:panelGrid  >  
+            	<h:outputLabel  value="Start time: "/>	
+            	<p:calendar value="#{subsection.startTime}" pattern="HH:mm" timeOnly="true"/>  
+            	<h:outputLabel  value="End time: "/>
+                <p:calendar value="#{subsection.endTime}" pattern="HH:mm" timeOnly="true"/>  
+            </h:panelGrid>  
+        </p:panel>  
+    </p:dataGrid>  
+</p:scrollPanel> 
+
+
+
+	</h:form>
+    </p:tab>
+ 
+     
+     
+</p:accordionPanel>   
+		
+</h:body>
+</f:view>
+</html>
