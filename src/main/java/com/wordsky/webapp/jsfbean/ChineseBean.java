@@ -187,6 +187,7 @@ public class ChineseBean {
 				new FacesMessage(FacesMessage.SEVERITY_INFO,
 						this.selectedChinese.toString(), " has been deleted."));
 		return actionComplete();
+		
 	}
 
 	public String addChinese() {
