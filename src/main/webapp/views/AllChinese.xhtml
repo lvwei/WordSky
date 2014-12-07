@@ -9,7 +9,7 @@
 	template="template/MainTemplate.xhtml">
 	<ui:define name="content">
 		<h:form>
-			<p:growl id="messages" showDetail="true" />
+			<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
 			<p:dataTable id="detailItemTable" var="item" filteredValue="#{ChineseBean.filteredItemList}"
 				value="#{ChineseBean.itemList}" rows="10" WidgetVar="detailItemTable"
 				paginator="true"

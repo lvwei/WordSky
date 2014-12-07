@@ -142,6 +142,7 @@ public class ChineseBean {
 		this.currentField = table;
 		this.title = "所有";
 		this.isSingleType = false;
+		this.currentType="点此编辑";
 		if (table.equals("item")) {
 			this.title += "词语";
 		} else
@@ -220,9 +221,9 @@ public class ChineseBean {
 									this.newChinese.toString(),
 									" already created."));
 				} else {
-					this.newChinese.setType(target.getType() + '+'
+					target.setType(target.getType() + '+'
 							+ this.newChinese.getType());
-					chineseDAO.updateChinese(currentField, newChinese);
+					chineseDAO.updateChinese(currentField, target);
 					FacesContext.getCurrentInstance().addMessage(
 							null,
 							new FacesMessage(FacesMessage.SEVERITY_WARN,
