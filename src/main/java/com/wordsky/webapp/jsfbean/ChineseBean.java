@@ -171,7 +171,6 @@ public class ChineseBean {
 	}
 
 	public String deleteChinese() {
-		chineseDAO.deleteChinese("item", this.selectedChinese.getId());
 		this.title = "É¾³ý";
 		if (this.currentField.equals("item")) {
 			this.title += "´ÊÓï";

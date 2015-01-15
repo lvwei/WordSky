@@ -65,13 +65,20 @@
 				ajax="false" />
 		</p:tieredMenu>
 		
-		<p:commandButton id="dynaButton4" value="English" type="button"
+		 <p:commandButton id="dynaButton4" value="记忆之眼" type="button"
 			style="width:200px;" />
 		<p:tieredMenu overlay="true" trigger="dynaButton4" my="left top"
 			at="left bottom" style="width:200px">
-			<p:menuitem value="Word" action="#{EnglishBean.getWord}" ajax="false" />
-			<p:menuitem value="Phrase" action="#{EnglishBean.getPhrase}"
+			<p:menuitem value="人" action="#{Remember_pBean.getRemember}" ajax="false" />
+			<p:menuitem value="事" action="#{EnglishBean.getSample}"
 				ajax="false" />
+		</p:tieredMenu>
+		
+		<p:commandButton id="dynaButton5" value="English" type="button"
+			style="width:200px;" />
+		<p:tieredMenu overlay="true" trigger="dynaButton5" my="left top"
+			at="left bottom" style="width:200px">
+			<p:menuitem value="Word" action="#{EnglishBean.getWord}" ajax="false" />
 			<p:menuitem value="Sample" action="#{EnglishBean.getSample}"
 				ajax="false" />
 		</p:tieredMenu>
@@ -83,7 +90,7 @@
 	<p:separator></p:separator>
 
 	<ui:insert name="content">
-	无独原曲云添梦 尽血干青雨化茹
+	zzzzzz
 	</ui:insert>
 
 </h:body>
