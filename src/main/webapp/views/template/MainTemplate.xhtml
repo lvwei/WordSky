@@ -16,7 +16,7 @@
 
 	<h:form styleClass="topMenu">
 
-		<p:commandButton id="dynaButton" value="词" type="button"
+		<p:commandButton id="dynaButton" value="字字珠玑" type="button"
 			style="width:200px" />
 		<p:tieredMenu overlay="true" trigger="dynaButton" my="left top"
 			at="left bottom" style="width:200px">
@@ -45,7 +45,7 @@
 			</p:submenu>
 		</p:tieredMenu>
 
-		<p:commandButton id="dynaButton2" value="语句" type="button"
+		<p:commandButton id="dynaButton2" value="心醉神迷" type="button"
 			style="width:200px;" />
 		<p:tieredMenu overlay="true" trigger="dynaButton2" my="left top"
 			at="left bottom" style="width:200px">
@@ -55,7 +55,7 @@
 				ajax="false" />
 		</p:tieredMenu>
 
-		<p:commandButton id="dynaButton3" value="批量查阅" type="button"
+		<p:commandButton id="dynaButton3" value="君临天下" type="button"
 			style="width:200px;" />
 
 		<p:tieredMenu overlay="true" trigger="dynaButton3" my="left top"
@@ -65,7 +65,7 @@
 				ajax="false" />
 		</p:tieredMenu>
 		
-		 <p:commandButton id="dynaButton4" value="记忆之眼" type="button"
+		 <p:commandButton id="dynaButton4" value="暮光之眼" type="button"
 			style="width:200px;" />
 		<p:tieredMenu overlay="true" trigger="dynaButton4" my="left top"
 			at="left bottom" style="width:200px">
@@ -78,8 +78,8 @@
 			style="width:200px;" />
 		<p:tieredMenu overlay="true" trigger="dynaButton5" my="left top"
 			at="left bottom" style="width:200px">
-			<p:menuitem value="Word" action="#{EnglishBean.getWord}" ajax="false" />
-			<p:menuitem value="Sample" action="#{EnglishBean.getSample}"
+			<p:menuitem value="Word" action="#{EnglishBean.getEngish('word')}" ajax="false" />
+			<p:menuitem value="Sample" action="#{EnglishBean.getEnglish('sample')}"
 				ajax="false" />
 		</p:tieredMenu>
 

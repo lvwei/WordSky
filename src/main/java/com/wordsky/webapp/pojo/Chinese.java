@@ -13,7 +13,7 @@ public Chinese(){
 }
 @Override
 public String toString() {
-	return "Chinese [id=" + id + ", content=" + content + ", origin=" + origin
+	return "Chinese [content=" + content + ", origin=" + origin
 			+ ", type=" + type + "]";
 }
 public Chinese(String content,String origin,String type){

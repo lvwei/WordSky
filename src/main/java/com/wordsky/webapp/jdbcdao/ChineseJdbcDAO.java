@@ -18,6 +18,7 @@ public class ChineseJdbcDAO implements ChineseDAO {
 	@Override
 	public List<Chinese> getChinese(String table, String type) {
 		List<Chinese> ch = null;
+		type='%'+type+'%';
 		final String SQL_QUERY = "SELECT * FROM " + table
 				+ " where type LIKE ?";
 		try {

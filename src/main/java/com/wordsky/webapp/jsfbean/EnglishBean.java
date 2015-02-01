@@ -30,6 +30,8 @@ public class EnglishBean {
 	private String currentType;
 	private English newEnglish;
 	private English selectedEnglish;
+	private boolean keepFiltered = false;
+	private boolean isActionBack=false;
 
 	
 
@@ -76,18 +78,28 @@ public class EnglishBean {
 	public void setSelectedEnglish(English selectedEnglish) {
 		this.selectedEnglish = selectedEnglish;
 	}
-	public String getSample(){
-		this.currentType ="sample";
-		this.itemList = englishDAO.getEnglish("sample");
-		return "DetailEnglish.xhtml";
-	}
-	public String getWord(){
-		this.currentType ="word";
-		this.itemList = englishDAO.getEnglish("word");
+	public String getEnglish(String table){
+		this.currentType =table;		
+		checkForActionBack();
+		this.itemList = englishDAO.getEnglish(this.currentType);
+		checkForFilter();
+		this.isActionBack=false;
 		return "DetailEnglish.xhtml";
 	}
 	
-	
+	public void checkForActionBack() {
+		if (this.isActionBack) {
+			this.keepFiltered=true;
+		}
+		else
+			this.keepFiltered=false;
+	}
+
+	public void checkForFilter() {
+		if (!this.keepFiltered) {
+			this.filteredItemList = this.itemList;
+		}
+	}	
 	public String addEnglish(){
 		this.newEnglish =new English();
 		this.title = "Add new ";
@@ -116,11 +128,12 @@ public class EnglishBean {
     
 	
 	public String actionComplete(){
-		this.itemList=englishDAO.getEnglish(currentType);
-		return "DetailEnglish.xhtml";
+		this.keepFiltered = true;
+		this.isActionBack=true;
+		return getEnglish(this.currentType);
 	}
 	public String englishActionCancel() {
-		return "DetailEnglish.xhtml";
+		return actionComplete();
 	}
 	
 	public String editEnglish() {

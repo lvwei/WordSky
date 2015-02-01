@@ -21,7 +21,7 @@
         			List of #{EnglishBean.currentType}
    				</f:facet>
 
-				<p:column headerText="Content" filterBy="#{item.content}"
+				<p:column headerText="Content" filterBy="#{item.content}" sortBy="#{item.content}"
 					filterMatchMode="startsWith">
 					<h:outputText value="#{item.content}" />
 				</p:column>
