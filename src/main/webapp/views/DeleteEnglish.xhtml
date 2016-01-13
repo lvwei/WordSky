@@ -11,27 +11,22 @@
 		<h:form styleClass="centre-border">
 			<h:panelGrid columns="2" columnClasses="column" cellpadding="4">
 				<f:facet name="header" >
-                      		   #{ChineseBean.title}
+                      		   #{EnglishBean.title}
     			</f:facet>
-				<h:outputLabel styleClass="label" for="content" value="內容:" />
+				<h:outputLabel styleClass="label" for="content" value="Content:" />
 				<h:outputLabel styleClass="inplace" for="content"
-					value="#{ChineseBean.selectedChinese.content}" />
+					value="#{EnglishBean.selectedEnglish.content}" />
 				<p:separator></p:separator>
 				<p:separator></p:separator>
-				<h:outputLabel styleClass="label" for="origin" value="出处:" />
-				<h:outputLabel styleClass="inplace" for="origin"
-					value="#{ChineseBean.selectedChinese.origin}" />
-				<p:separator></p:separator>
-				<p:separator></p:separator>
-				<h:outputLabel styleClass="label" for="type" value="类别:" />
-				<h:outputLabel styleClass="inplace" id="type"
-					value="#{ChineseBean.selectedChinese.type}"/>
+				<h:outputLabel styleClass="label" for="description" value="Desctiption:" />
+				<h:outputLabel styleClass="inplace" for="description"
+					value="#{EnglishBean.selectedEnglish.description}" />
 			</h:panelGrid>
 
 			<p:commandButton value="确定"
-				action="#{ChineseBean.deleteChineseComplete}" ajax="false" />
+				action="#{EnglishBean.deleteEnglishComplete}" ajax="false" />
 			<p:commandButton value="取消"
-				action="#{ChineseBean.chineseActionCancel}" ajax="false" />
+				action="#{EnglishBean.englishActionCancel}" ajax="false" />
 		</h:form>
 		<p:separator></p:separator>
 

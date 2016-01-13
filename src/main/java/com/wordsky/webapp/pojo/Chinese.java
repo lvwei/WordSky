@@ -1,17 +1,5 @@
 package com.wordsky.webapp.pojo;
 
-import java.util.Date;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import javax.inject.Named;
-
-import org.primefaces.event.TransferEvent;
-import org.primefaces.model.DualListModel;
-
 public class Chinese{
 	
 
@@ -25,7 +13,7 @@ public Chinese(){
 }
 @Override
 public String toString() {
-	return "Chinese [id=" + id + ", content=" + content + ", origin=" + origin
+	return "Chinese [content=" + content + ", origin=" + origin
 			+ ", type=" + type + "]";
 }
 public Chinese(String content,String origin,String type){

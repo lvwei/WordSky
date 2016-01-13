@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	xmlns:p="http://primefaces.org/ui"
+	template="template/MainTemplate.xhtml">
+	<ui:define name="content">
+		<h:form>
+			<p:messages id="messages" showDetail="true" autoUpdate="true"
+				closable="true" />
+			<p:dataTable id="detailItemTable" var="item"
+				value="#{EnglishBean.itemList}" rows="10"
+				WidgetVar="detailItemTable"
+				filteredValue="#{EnglishBean.filteredItemList}" paginator="true"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15">
+				<f:facet name="header">
+        			List of #{EnglishBean.currentType}
+   				</f:facet>
+
+				<p:column headerText="Content" filterBy="#{item.content}" sortBy="#{item.content}"
+					filterMatchMode="startsWith">
+					<h:outputText value="#{item.content}" />
+				</p:column>
+
+				<p:column headerText="Description" filterBy="#{item.description}"
+					filterMatchMode="contains">
+					<h:outputText value="#{item.description}" />
+				</p:column>
+
+				<p:column headerText="Option" style="width:140px;">
+					<p:commandButton action="#{EnglishBean.editEnglish}"
+						actionListener="#{EnglishBean.selectEnglishListener}" ajax="false"
+						icon="ui-icon-pencil">
+						<f:attribute name="item" value="#{item}" />
+					</p:commandButton>
+					<p:commandButton action="#{EnglishBean.englishSearch}"
+						actionListener="#{EnglishBean.selectEnglishListener}" ajax="false"
+						icon="ui-icon-search">
+						<f:attribute name="item" value="#{item}" />
+					</p:commandButton>
+					<p:commandButton action="#{EnglishBean.deleteEnglish}"
+						actionListener="#{EnglishBean.selectEnglishListener}" ajax="false"
+						icon="ui-icon-close">
+						<f:attribute name="item" value="#{item}" />
+					</p:commandButton>
+				</p:column>
+
+
+				<f:facet name="footer">
+			        In total there are #{fn:length(EnglishBean.itemList)} phases.
+			        				<p:commandButton value="Add"
+						action="#{EnglishBean.addEnglish}" ajax="false" />
+				</f:facet>
+			</p:dataTable>
+
+		</h:form>
+	</ui:define>
+</ui:composition>

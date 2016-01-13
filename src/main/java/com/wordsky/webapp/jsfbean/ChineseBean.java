@@ -1,5 +1,6 @@
 package com.wordsky.webapp.jsfbean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,9 +16,10 @@ import com.wordsky.webapp.dao.ChineseDAO;
 import com.wordsky.webapp.helperclass.ChineseHelper;
 import com.wordsky.webapp.pojo.Chinese;
 
+@SuppressWarnings("serial")
 @Named("ChineseBean")
 @Scope("session")
-public class ChineseBean {
+public class ChineseBean implements Serializable {
 
 	@Inject
 	ChineseDAO chineseDAO;
@@ -29,10 +31,28 @@ public class ChineseBean {
 	private String currentType;
 	private String currentField;
 	private boolean isSingleType = true;
+	private boolean keepFiltered = false;
+	private boolean isActionBack = false;
 	private Chinese newChinese = new Chinese("点此编辑", "点此编辑", "点此编辑");
 	private Chinese selectedChinese;
 	private List<String> origins;
 	private List<String> types;
+
+	public boolean isActionBack() {
+		return isActionBack;
+	}
+
+	public void setActionBack(boolean isActionBack) {
+		this.isActionBack = isActionBack;
+	}
+
+	public boolean isKeepFiltered() {
+		return keepFiltered;
+	}
+
+	public void setKeepFiltered(boolean keepFiltered) {
+		this.keepFiltered = keepFiltered;
+	}
 
 	public ChineseBean() {
 		this.currentType = "点此编辑";
@@ -127,37 +147,48 @@ public class ChineseBean {
 	}
 
 	public String getChinese(String table, String type) {
-		this.currentType = type;
-		this.currentField = table;
-		this.isSingleType = true;
 		this.itemList = chineseDAO.getChinese(table, type);
-		if (table.equals("item")) {
-			return "DetailChinese.xhtml";
-		} else
-			return "DetailChinese.xhtml";
+		checkForFilter();
+		initialSet(type,table,true);
+		this.title = this.currentType;
+		this.keepFiltered=false;
+		return "DetailChinese.xhtml";
 	}
 
 	public String toAllChinese(String table) {
 		this.itemList = chineseDAO.getChinese(table);
-		this.currentField = table;
+		checkForFilter();
+		initialSet("点此编辑",table,false);
 		this.title = "所有";
-		this.isSingleType = false;
-		this.currentType="点此编辑";
-		if (table.equals("item")) {
+		addTitle (table); 
+		this.keepFiltered=false;
+		return "AllChinese.xhtml";
+	}
+	
+	public void initialSet(String type,String field, boolean isSingleType){
+		this.currentType = type;
+		this.currentField = field;
+		this.isSingleType = isSingleType;
+	}
+	
+	public void checkForFilter() {
+		if (!this.keepFiltered) {
+			this.filteredItemList = this.itemList;
+		}
+	}
+	
+	public void addTitle(String field){
+		if (field.equals("item")) {
 			this.title += "词语";
 		} else
 			this.title += "语句";
-		return "AllChinese.xhtml";
 	}
 
 	public String editChinese() {
 		this.origins = chineseDAO.getOrigin(this.currentField);
 		this.types = ChineseHelper.getType(this.currentField);
 		this.title = "编辑";
-		if (this.currentField.equals("item")) {
-			this.title += "词语";
-		} else
-			this.title += "语句";
+		addTitle (this.currentField); 
 		return "EditChinese.xhtml";
 	}
 
@@ -167,16 +198,12 @@ public class ChineseBean {
 				null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO,
 						this.selectedChinese.toString(), " has been edited."));
-		return actionComplete();
+		return actionCompleteWithUpdate();
 	}
 
 	public String deleteChinese() {
-		chineseDAO.deleteChinese("item", this.selectedChinese.getId());
 		this.title = "删除";
-		if (this.currentField.equals("item")) {
-			this.title += "词语";
-		} else
-			this.title += "语句";
+		addTitle (this.currentField); 
 		return "DeleteChinese.xhtml";
 	}
 
@@ -187,8 +214,8 @@ public class ChineseBean {
 				null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO,
 						this.selectedChinese.toString(), " has been deleted."));
-		return actionComplete();
-		
+		return actionCompleteWithUpdate();
+
 	}
 
 	public String addChinese() {
@@ -197,15 +224,23 @@ public class ChineseBean {
 		this.origins = chineseDAO.getOrigin(this.currentField);
 		this.types = ChineseHelper.getType(this.currentField);
 		this.title = "添加新";
-		if (this.currentField.equals("item")) {
-			this.title += "词语";
-		} else
-			this.title += "语句";
+		addTitle (this.currentField); 
 		return "AddChinese.xhtml";
 	}
 
 	public String addChineseComplete() {
-		if (chineseDAO.addChinese(this.currentField, this.newChinese)) {
+		if (this.newChinese.getContent().equals("点此编辑")) {
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Creation Fail!", " Content must be filled!"));
+		} 
+		else if (this.newChinese.getType().equals("点此编辑")) {
+			FacesContext.getCurrentInstance().addMessage(
+					null,
+					new FacesMessage(FacesMessage.SEVERITY_ERROR,
+							"Creation Fail!", " Type must be filled!"));
+		}else if (chineseDAO.addChinese(this.currentField, this.newChinese)) {
 			FacesContext.getCurrentInstance().addMessage(
 					null,
 					new FacesMessage(FacesMessage.SEVERITY_INFO,
@@ -224,23 +259,36 @@ public class ChineseBean {
 					target.setType(target.getType() + '+'
 							+ this.newChinese.getType());
 					chineseDAO.updateChinese(currentField, target);
-					FacesContext.getCurrentInstance().addMessage(
-							null,
-							new FacesMessage(FacesMessage.SEVERITY_WARN,
-									this.newChinese.toString(),
-									" already created and just updated with additional type."));
+					FacesContext
+							.getCurrentInstance()
+							.addMessage(
+									null,
+									new FacesMessage(
+											FacesMessage.SEVERITY_WARN,
+											this.newChinese.toString(),
+											" already created and just updated with additional type."));
 				}
 			}
 		}
-		return actionComplete();
+		return actionCompleteWithUpdate();
 
 	}
 
 	public String chineseActionCancel() {
-		return "DetailChinese.xhtml";
+		return actionComplete();
 	}
 
 	public String actionComplete() {
+		this.keepFiltered=true;
+		if (this.isSingleType) {
+			return getChinese(this.currentField, this.currentType);
+		} else {
+			return toAllChinese(this.currentField);
+		}
+
+	}
+	
+	public String actionCompleteWithUpdate() {
 		if (this.isSingleType) {
 			return getChinese(this.currentField, this.currentType);
 		} else {
@@ -257,23 +305,29 @@ public class ChineseBean {
 			this.searchedList = chineseDAO
 					.selectItemForSentence(this.selectedChinese.getContent());
 		}
-		this.title = this.selectedChinese.getContent() + " 查询结果:";
+		this.title = "<"+this.selectedChinese.getContent()+">" + " 查询结果:";
 		return "ChineseSearch.xhtml";
 	}
 
-	public List<String> potentialOrigin(String languagePrefix) {
+	public List<String> potentialOrigin(String languageEntered) {
 		List<String> matches = new ArrayList<String>();
-		this.origins = chineseDAO.getOrigin("item");
+		this.origins = chineseDAO.getOrigin(this.currentField);
 		for (String possibleLanguage : this.origins) {
-			if (possibleLanguage.startsWith(languagePrefix)) {
+			if (possibleLanguage.startsWith(languageEntered)) {
 				matches.add(possibleLanguage);
 			}
 		}
-
-		if (matches.isEmpty()) {
+		
+		if(matches.size()==1){
+			if(!matches.get(0).equals(languageEntered))
+				matches.add(languageEntered);
+		}
+		if(matches.isEmpty())
+			matches.add(languageEntered);
+		if (languageEntered.equals("m")) {
 			return this.origins;
 		} else {
-			return (matches);
+			return matches;
 		}
 	}
 

@@ -12,36 +12,26 @@
 			<h:panelGrid styleClass="itemInfo" columns="2" columnClasses="column"
 				cellpadding="4">
 				<f:facet name="header">
-                       #{ChineseBean.title}
+                       #{EnglishBean.title}
    			</f:facet>
-				<h:outputLabel styleClass="label" for="content" value="內容:" />
+				<h:outputLabel styleClass="label" for="content" value="Content:" />
 				<p:inplace styleClass="inplace" id="content"
-					label="#{ChineseBean.newChinese.content}" editor="true">
-					<p:inputTextarea value="#{ChineseBean.newChinese.content}" required="true"
+					label="#{EnglishBean.newEnglish.content}" editor="true">
+					<p:inputTextarea rows="2" value="#{EnglishBean.newEnglish.content}" required="true"
 						label="text" />
 				</p:inplace>
-				<h:outputLabel styleClass="label" for="type" value="类别:" />
-				<p:inplace styleClass="inplace" id="type"
-					label="#{ChineseBean.newChinese.type}" effectSpeed="fast" event="dblclick">
-					<h:selectOneMenu value="#{ChineseBean.newChinese.type}">
-						<f:selectItems value="#{ChineseBean.types}" />
-					</h:selectOneMenu>
-				</p:inplace>
-				<h:outputLabel styleClass="label" for="origin" value="出处:" />
-				<p:inplace styleClass="inplace" id="origin"
-					label="#{ChineseBean.newChinese.origin}" effectSpeed="fast"
-					event="dblclick">
-					<p:autoComplete value="#{ChineseBean.newChinese.origin}"
-						completeMethod="#{ChineseBean.potentialOrigin}"
-						forceSelection="true" required="true"
-						requiredMessage="You must choose a origin" />
+				<h:outputLabel styleClass="label" for="description" value="Desctiption:" />
+				<p:inplace styleClass="inplace" id="description"
+					label="#{EnglishBean.newEnglish.description}" effectSpeed="fast" event="dblclick">
+					<p:inputText value="#{EnglishBean.newEnglish.description}" required="true"
+						label="text" />
 				</p:inplace>
 
 			</h:panelGrid>
 
-			<p:commandButton value="确定" action="#{ChineseBean.addChineseComplete}"
+			<p:commandButton value="确定" action="#{EnglishBean.addEnglishComplete}"
 				ajax="false" />
-			<p:commandButton value="返回" action="#{ChineseBean.chineseActionCancel}"
+			<p:commandButton value="返回" action="#{EnglishBean.englishActionCancel}"
 				ajax="false" />
 		</h:form>
 		<h:form>
@@ -50,7 +40,7 @@
 				widgetVar="bar">
 				<h:outputText value="-鼠标点击内容展开详细选项" style="font-size:26px;" />
 				<br></br>
-				<h:outputText value="-输入'm'展开所有已有出处" style="font-size:26px;" />
+				<h:outputText value="-随意输入任何字符展开所有已有出处" style="font-size:26px;" />
 				<br></br>
 				<h:outputText value="-出处自带过滤功能" style="font-size:26px;" />
 			</p:notificationBar>

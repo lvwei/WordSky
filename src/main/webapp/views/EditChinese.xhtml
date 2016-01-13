@@ -17,7 +17,7 @@
 				<h:outputLabel styleClass="label" for="content" value="內容:" />
 				<p:inplace styleClass="inplace" id="content"
 					label="#{ChineseBean.selectedChinese.content}" editor="true">
-					<p:inputText value="#{ChineseBean.selectedChinese.content}" required="true"
+					<p:inputTextarea value="#{ChineseBean.selectedChinese.content}" required="true"
 						label="text" />
 				</p:inplace>
 				<h:outputLabel styleClass="label" for="type" value="类别:" />
@@ -50,7 +50,7 @@
 				widgetVar="bar">
 				<h:outputText value="-鼠标点击内容展开详细选项" style="font-size:26px;" />
 				<br></br>
-				<h:outputText value="-随意输入任何字符展开所有已有出处" style="font-size:26px;" />
+				<h:outputText value="-输入'm'展开所有已有出处" style="font-size:26px;" />
 				<br></br>
 				<h:outputText value="-出处自带过滤功能" style="font-size:26px;" />
 			</p:notificationBar>

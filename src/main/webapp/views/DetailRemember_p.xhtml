@@ -10,17 +10,17 @@
 	<ui:define name="content">
 		<h:form>
 			<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-			<p:dataTable id="detailItemTable" var="item" filteredValue="#{ChineseBean.filteredItemList}"
-				value="#{ChineseBean.itemList}" rows="10" WidgetVar="detailItemTable"
+			<p:dataTable id="detailItemTable" var="item" filteredValue="#{Remember_pBean.filteredItemList}"
+				value="#{Remember_pBean.itemList}" rows="10" WidgetVar="detailItemTable"
 				paginator="true"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 				rowsPerPageTemplate="5,10,15">
 				<f:facet name="header">
-        			#{ChineseBean.title}
+        			#{Remember_pBean.currentType}
    				</f:facet>
-				<p:column headerText="Origin" style="width:250px;" sortBy="#{item.origin}"
-					filterBy="#{item.origin}" filterMatchMode="contains">
-					<h:outputText value="#{item.origin}" />
+				<p:column headerText="Target" style="width:250px;" sortBy="#{item.target}"
+					filterBy="#{item.target}" filterMatchMode="contains">
+					<h:outputText value="#{item.target}" />
 				</p:column>
 
 				<p:column headerText="Content" sortBy="#{item.content}"
@@ -29,18 +29,18 @@
 				</p:column>
 
 				<p:column headerText="Option" style="width:140px;">
-					<p:commandButton action="#{ChineseBean.editChinese}"
-						actionListener="#{ChineseBean.selectChineseListener}" ajax="false"
+					<p:commandButton action="#{Remember_pBean.editRemember_p}"
+						actionListener="#{Remember_pBean.selectRemember_pListener}" ajax="false"
 						icon="ui-icon-pencil">
 						<f:attribute name="item" value="#{item}" />
 					</p:commandButton>
-					<p:commandButton action="#{ChineseBean.chineseSearch}"
-						actionListener="#{ChineseBean.selectChineseListener}" ajax="false"
+					<p:commandButton action="#{Remember_pBean.Remember_pSearch}"
+						actionListener="#{Remember_pBean.selectRemember_pListener}" ajax="false"
 						icon="ui-icon-search">
 						<f:attribute name="item" value="#{item}" />
 					</p:commandButton>
-					<p:commandButton action="#{ChineseBean.deleteChinese}"
-						actionListener="#{ChineseBean.selectChineseListener}" ajax="false"
+					<p:commandButton action="#{Remember_pBean.deleteRemember_p}"
+						actionListener="#{Remember_pBean.selectRemember_pListener}" ajax="false"
 						icon="ui-icon-close">
 						<f:attribute name="item" value="#{item}" />
 					</p:commandButton>
@@ -50,10 +50,10 @@
 
 
 				<f:facet name="footer">
-			        In total there are #{fn:length(ChineseBean.itemList)} phases.
+			        In total there are #{fn:length(Remember_pBean.itemList)} phases.
 			        
 			        <p:commandButton value="Add"
-						action="#{ChineseBean.addChinese}" ajax="false" />
+						action="#{Remember_pBean.addRemember_p}" ajax="false" />
 				</f:facet>
 			</p:dataTable>
 		</h:form>
