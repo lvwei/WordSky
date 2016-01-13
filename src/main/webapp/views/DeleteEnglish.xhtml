@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="template/MainTemplate.xhtml">
+	<ui:define name="content">
+
+		<h:form styleClass="centre-border">
+			<h:panelGrid columns="2" columnClasses="column" cellpadding="4">
+				<f:facet name="header" >
+                      		   #{EnglishBean.title}
+    			</f:facet>
+				<h:outputLabel styleClass="label" for="content" value="Content:" />
+				<h:outputLabel styleClass="inplace" for="content"
+					value="#{EnglishBean.selectedEnglish.content}" />
+				<p:separator></p:separator>
+				<p:separator></p:separator>
+				<h:outputLabel styleClass="label" for="description" value="Desctiption:" />
+				<h:outputLabel styleClass="inplace" for="description"
+					value="#{EnglishBean.selectedEnglish.description}" />
+			</h:panelGrid>
+
+			<p:commandButton value="确定"
+				action="#{EnglishBean.deleteEnglishComplete}" ajax="false" />
+			<p:commandButton value="取消"
+				action="#{EnglishBean.englishActionCancel}" ajax="false" />
+		</h:form>
+		<p:separator></p:separator>
+
+	</ui:define>
+</ui:composition>

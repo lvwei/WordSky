@@ -1,6 +1,7 @@
 package com.wordsky.webapp.jsfbean;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -80,25 +81,18 @@ public class EnglishBean {
 	}
 	public String getEnglish(String table){
 		this.currentType =table;		
-		checkForActionBack();
 		this.itemList = englishDAO.getEnglish(this.currentType);
 		checkForFilter();
-		this.isActionBack=false;
+		this.keepFiltered=false;
 		return "DetailEnglish.xhtml";
 	}
 	
-	public void checkForActionBack() {
-		if (this.isActionBack) {
-			this.keepFiltered=true;
-		}
-		else
-			this.keepFiltered=false;
-	}
 
 	public void checkForFilter() {
 		if (!this.keepFiltered) {
 			this.filteredItemList = this.itemList;
 		}
+
 	}	
 	public String addEnglish(){
 		this.newEnglish =new English();
@@ -123,13 +117,12 @@ public class EnglishBean {
 									this.newEnglish.toString(),
 									" already created."));
 		}
-      return actionComplete();
+		return getEnglish(this.currentType);
 	}
     
 	
 	public String actionComplete(){
-		this.keepFiltered = true;
-		this.isActionBack=true;
+		this.keepFiltered=true;
 		return getEnglish(this.currentType);
 	}
 	public String englishActionCancel() {
@@ -151,7 +144,7 @@ public class EnglishBean {
 				null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO,
 						this.selectedEnglish.toString(), " has been edited."));
-		return actionComplete();
+		return getEnglish(this.currentType);
 	}
 	
 	public String deleteEnglish() {
@@ -170,8 +163,7 @@ public class EnglishBean {
 				null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO,
 						this.selectedEnglish.toString(), " has been deleted."));
-		return actionComplete();
-		
+		return getEnglish(this.currentType);		
 	}
 	
 	

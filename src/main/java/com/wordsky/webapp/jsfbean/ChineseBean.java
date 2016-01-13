@@ -147,23 +147,21 @@ public class ChineseBean implements Serializable {
 	}
 
 	public String getChinese(String table, String type) {
-		checkForActionBack();
 		this.itemList = chineseDAO.getChinese(table, type);
 		checkForFilter();
 		initialSet(type,table,true);
 		this.title = this.currentType;
-		this.isActionBack=false;
+		this.keepFiltered=false;
 		return "DetailChinese.xhtml";
 	}
 
 	public String toAllChinese(String table) {
-		checkForActionBack();
 		this.itemList = chineseDAO.getChinese(table);
 		checkForFilter();
 		initialSet("点此编辑",table,false);
 		this.title = "所有";
 		addTitle (table); 
-		this.isActionBack=false;
+		this.keepFiltered=false;
 		return "AllChinese.xhtml";
 	}
 	
@@ -173,14 +171,6 @@ public class ChineseBean implements Serializable {
 		this.isSingleType = isSingleType;
 	}
 	
-	public void checkForActionBack() {
-		if (this.isActionBack) {
-			this.keepFiltered=true;
-		}
-		else
-			this.keepFiltered=false;
-	}
-
 	public void checkForFilter() {
 		if (!this.keepFiltered) {
 			this.filteredItemList = this.itemList;
@@ -208,7 +198,7 @@ public class ChineseBean implements Serializable {
 				null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO,
 						this.selectedChinese.toString(), " has been edited."));
-		return actionComplete();
+		return actionCompleteWithUpdate();
 	}
 
 	public String deleteChinese() {
@@ -224,7 +214,7 @@ public class ChineseBean implements Serializable {
 				null,
 				new FacesMessage(FacesMessage.SEVERITY_INFO,
 						this.selectedChinese.toString(), " has been deleted."));
-		return actionComplete();
+		return actionCompleteWithUpdate();
 
 	}
 
@@ -280,7 +270,7 @@ public class ChineseBean implements Serializable {
 				}
 			}
 		}
-		return actionComplete();
+		return actionCompleteWithUpdate();
 
 	}
 
@@ -289,8 +279,16 @@ public class ChineseBean implements Serializable {
 	}
 
 	public String actionComplete() {
-		this.keepFiltered = true;
-		this.isActionBack=true;
+		this.keepFiltered=true;
+		if (this.isSingleType) {
+			return getChinese(this.currentField, this.currentType);
+		} else {
+			return toAllChinese(this.currentField);
+		}
+
+	}
+	
+	public String actionCompleteWithUpdate() {
 		if (this.isSingleType) {
 			return getChinese(this.currentField, this.currentType);
 		} else {

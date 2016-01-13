@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="template/MainTemplate.xhtml">
+	<ui:define name="content">
+
+		<h:form styleClass="centre-border">
+			<h:panelGrid styleClass="itemInfo" columns="2" columnClasses="column"
+				cellpadding="4">
+				<f:facet name="header">
+                        #{EnglishBean.title}
+   			</f:facet>
+				<h:outputLabel styleClass="label" for="content" value="Content:" />
+				<p:inplace styleClass="inplace" id="content"
+					label="#{EnglishBean.selectedEnglish.content}" editor="true">
+					<p:inputTextarea rows="2" value="#{EnglishBean.selectedEnglish.content}" required="true"
+						label="text" />
+				</p:inplace>
+				<h:outputLabel styleClass="label" for="description" value="Desctiption:" />
+				<p:inplace styleClass="inplace" id="description"
+					label="#{EnglishBean.selectedEnglish.description}" effectSpeed="fast" event="dblclick">
+					<p:inputText value="#{EnglishBean.selectedEnglish.description}" required="true"
+						label="text" />
+				</p:inplace>
+
+			</h:panelGrid>
+
+			<p:commandButton value="确定" action="#{EnglishBean.editEnglishComplete}"
+				ajax="false" />
+			<p:commandButton value="返回" action="#{EnglishBean.englishActionCancel}"
+				ajax="false" />
+		</h:form>
+		<h:form>
+			<p:separator></p:separator>
+			<p:notificationBar position="top" effect="slide" styleClass="top"
+				widgetVar="bar">
+				<h:outputText value="-鼠标点击内容展开详细选项" style="font-size:26px;" />
+				<br></br>
+				<h:outputText value="-随意输入任何字符展开所有已有出处" style="font-size:26px;" />
+				<br></br>
+				<h:outputText value="-出处自带过滤功能" style="font-size:26px;" />
+			</p:notificationBar>
+
+			<p:commandButton value="查看说明" onclick="PF('bar').show()"
+				type="button" icon="ui-icon-arrow-1-s" />
+			<p:commandButton value="取消说明" onclick="PF('bar').hide()"
+				type="button" icon="ui-icon-arrow-1-n" />
+		</h:form>
+
+	</ui:define>
+</ui:composition>
